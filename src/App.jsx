@@ -343,6 +343,39 @@ function MainApp() {
                   </h2>
                 </div>
 
+                {/* Active Employee Order Summary Card on Entry Screen */}
+                {myTodayOrder && (
+                  <OrderSuccessModal
+                    order={myTodayOrder}
+                    isSessionClosed={isSessionClosed}
+                    onEdit={() => {
+                      if (myTodayOrder && myTodayOrder.items) {
+                        const cartFormatted = myTodayOrder.items.map(item => ({
+                          product_id: item.product_id,
+                          product_name: item.product_name_snapshot,
+                          size: item.size_snapshot,
+                          unit_price: item.unit_price_snapshot,
+                          quantity: item.quantity,
+                          sugar_option: item.sugar_option,
+                          ice_option: item.ice_option,
+                          toppings: item.toppings || [],
+                          note: item.note || '',
+                          subtotal: item.subtotal
+                        }));
+                        setCartItems(cartFormatted);
+                      }
+                      setUserModeView('SHOW_MENU');
+                      setIsEditingOrder(true);
+                      setIsCartOpen(true);
+                    }}
+                    onDeleteSuccess={() => {
+                      setMyTodayOrder(null);
+                      setIsEditingOrder(false);
+                      fetchTodaySession();
+                    }}
+                  />
+                )}
+
                 {/* 3 PRIMARY CHOICE CARDS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
                   

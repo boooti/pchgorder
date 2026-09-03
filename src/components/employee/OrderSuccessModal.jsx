@@ -63,9 +63,17 @@ export default function OrderSuccessModal({ order, isSessionClosed, onEdit, onDe
         {order.items && order.items.map((item, i) => (
           <div key={i} className="flex items-start justify-between text-xs py-2 border-b border-slate-100 last:border-0">
             <div>
-              <p className="font-bold text-slate-800 text-sm">
-                {item.quantity}× {item.product_name_snapshot} ({item.size_snapshot})
-              </p>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <p className="font-bold text-slate-800 text-sm">
+                  {item.quantity}× {item.product_name_snapshot} ({item.size_snapshot})
+                </p>
+                {item.is_gium && (
+                  <span className="text-[10px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <UserCheck className="w-3 h-3 text-amber-700" />
+                    <span>Đặt giùm cho {item.recipient_name} ({item.recipient_department || 'VP'})</span>
+                  </span>
+                )}
+              </div>
               <p className="text-slate-500 font-medium mt-0.5">
                 {item.sugar_option} đường · {item.ice_option}
                 {item.toppings && item.toppings.length > 0 && ` · + Topping: ${item.toppings.map(t => t.name).join(', ')}`}

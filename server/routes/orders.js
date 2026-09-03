@@ -83,27 +83,61 @@ router.get('/today', (req, res) => {
   });
 });
 
-// Get My Today Order
+// Get My Today Order (Includes orders placed by me OR placed for me)
 router.get('/my-today', (req, res) => {
   const { sessionId, employeeId } = req.query;
   if (!sessionId || !employeeId) {
     return res.status(400).json({ message: 'sessionId và employeeId là bắt buộc' });
   }
 
-  const order = db.prepare('SELECT * FROM orders WHERE session_id = ? AND employee_id = ?').get(sessionId, employeeId);
-  if (!order) return res.json({ hasOrder: false });
+  const empId = Number(employeeId);
 
-  const items = db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(order.id);
-  const parsedItems = items.map(item => ({
-    ...item,
-    toppings: item.toppings_snapshot_json ? JSON.parse(item.toppings_snapshot_json) : []
-  }));
+  // Find all orders in this session where this employee is either the owner OR the order placer
+  const orders = db.prepare(`
+    SELECT o.*, e.name as employee_name, e.department as employee_department
+    FROM orders o
+    JOIN employees e ON o.employee_id = e.id
+    WHERE o.session_id = ? AND (o.employee_id = ? OR o.ordered_by_employee_id = ?)
+    ORDER BY o.created_at ASC
+  `).all(sessionId, empId, empId);
+
+  if (!orders || orders.length === 0) return res.json({ hasOrder: false });
+
+  // Combine items across all orders placed by/for this employee
+  let combinedItems = [];
+  let totalAmount = 0;
+  let subsidyAmount = 0;
+  let employeePayAmount = 0;
+
+  for (const order of orders) {
+    const isGium = order.employee_id !== empId;
+    const items = db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(order.id);
+    const parsed = items.map(item => ({
+      ...item,
+      toppings: item.toppings_snapshot_json ? JSON.parse(item.toppings_snapshot_json) : [],
+      recipient_id: order.employee_id,
+      recipient_name: order.employee_name,
+      recipient_department: order.employee_department,
+      is_gium: isGium
+    }));
+
+    combinedItems.push(...parsed);
+    totalAmount += order.total_amount;
+    subsidyAmount += order.subsidy_amount;
+    employeePayAmount += order.employee_pay_amount;
+  }
 
   res.json({
     hasOrder: true,
     order: {
-      ...order,
-      items: parsedItems
+      id: orders[0].id,
+      session_id: Number(sessionId),
+      employee_id: empId,
+      total_amount: totalAmount,
+      subsidy_amount: subsidyAmount,
+      employee_pay_amount: employeePayAmount,
+      items: combinedItems,
+      orders_count: orders.length
     }
   });
 });
