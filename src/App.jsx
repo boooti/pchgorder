@@ -399,73 +399,66 @@ function MainApp() {
                     </div>
                   </button>
 
-                  {/* CHOICE 3: KIỂM TRA ORDER (ONLY FOR CREATOR) */}
-                  <button
-                    onClick={() => {
-                      if (!sessionData) {
-                        showToast('Chưa có nhóm order nào được mở hôm nay!', 'info');
-                        return;
-                      }
-                      const isCreator = currentUser && sessionData && (
-                        sessionData.created_by_employee_id === currentUser.id ||
-                        (sessionData.recipient_name && sessionData.recipient_name.toLowerCase().includes(currentUser.name.toLowerCase()))
-                      );
-                      if (!isCreator) {
-                        showToast('⚠️ Chức năng "Kiểm tra order" chỉ dành riêng cho người đã khởi tạo nhóm order này!', 'warning');
-                        return;
-                      }
-                      setIsMyCreatedOrdersOpen(true);
-                    }}
-                    className={`backdrop-blur-xl p-5 rounded-3xl border shadow-lg hover:shadow-xl transition duration-300 group flex flex-col justify-between space-y-4 hover:scale-[1.02] ${
-                      currentUser && sessionData && (
-                        sessionData.created_by_employee_id === currentUser.id ||
-                        (sessionData.recipient_name && sessionData.recipient_name.toLowerCase().includes(currentUser.name.toLowerCase()))
-                      )
-                        ? 'bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-400/50 text-navy-950'
-                        : 'bg-white/70 border-slate-200/80 opacity-80'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black shadow-md group-hover:scale-110 transition">
-                        <ShoppingBag className="w-6 h-6" />
-                      </div>
-                      {currentUser && sessionData && (
-                        sessionData.created_by_employee_id === currentUser.id ||
-                        (sessionData.recipient_name && sessionData.recipient_name.toLowerCase().includes(currentUser.name.toLowerCase()))
-                      ) ? (
-                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-600/20 text-emerald-800 border border-emerald-600/30">
-                          Người tạo nhóm
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">
-                          🔒 Đã khóa
-                        </span>
-                      )}
-                    </div>
+                  {/* CHOICE 3: KIỂM TRA & GỬI QUÁN (ACTIVE & BRIGHT FOR CREATOR) */}
+                  {(() => {
+                    const isCreator = currentUser && sessionData && (
+                      sessionData.created_by_employee_id === currentUser.id ||
+                      (sessionData.recipient_name && sessionData.recipient_name.toLowerCase().includes(currentUser.name.toLowerCase()))
+                    );
 
-                    <div>
-                      <h3 className="text-lg font-black text-navy-950 group-hover:text-emerald-800 transition">KIỂM TRA & GỬI QUÁN</h3>
-                      <p className="text-[11px] text-slate-600 mt-1 font-medium leading-relaxed">
-                        {currentUser && sessionData && (
-                          sessionData.created_by_employee_id === currentUser.id ||
-                          (sessionData.recipient_name && sessionData.recipient_name.toLowerCase().includes(currentUser.name.toLowerCase()))
-                        )
-                          ? 'Tổng hợp đơn hàng & sao chép 1-click gửi Zalo cho quán.'
-                          : 'Dành riêng cho người tạo nhóm xem và tổng hợp đơn.'}
-                      </p>
-                    </div>
+                    return (
+                      <button
+                        onClick={() => {
+                          if (!sessionData) {
+                            showToast('Chưa có nhóm order nào được mở hôm nay!', 'info');
+                            return;
+                          }
+                          if (!isCreator) {
+                            showToast('⚠️ Chức năng "Kiểm tra & gửi quán" chỉ dành riêng cho người đã tạo nhóm order này!', 'warning');
+                            return;
+                          }
+                          setIsMyCreatedOrdersOpen(true);
+                        }}
+                        className={`backdrop-blur-xl p-5 rounded-3xl border shadow-lg hover:shadow-xl transition duration-300 group flex flex-col justify-between space-y-4 hover:scale-[1.02] ${
+                          isCreator
+                            ? 'bg-gradient-to-br from-emerald-600 via-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white border-emerald-400 font-bold shadow-xl scale-[1.02]'
+                            : 'bg-white/80 border-slate-200/90 text-navy-950 opacity-75'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black shadow-md group-hover:scale-110 transition ${
+                            isCreator ? 'bg-white text-emerald-800' : 'bg-slate-200 text-slate-600'
+                          }`}>
+                            <ShoppingBag className="w-6 h-6" />
+                          </div>
+                          {isCreator ? (
+                            <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/20 text-white border border-white/30">
+                              ✓ Người tạo nhóm
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">
+                              🔒 Đã khóa
+                            </span>
+                          )}
+                        </div>
 
-                    <div className="flex items-center text-xs font-extrabold text-emerald-700 gap-1 pt-2 border-t border-slate-100">
-                      <span>
-                        {currentUser && sessionData && (
-                          sessionData.created_by_employee_id === currentUser.id ||
-                          (sessionData.recipient_name && sessionData.recipient_name.toLowerCase().includes(currentUser.name.toLowerCase()))
-                        )
-                          ? 'Xem kết quả & gửi quán ➔'
-                          : '🔒 Chỉ dành cho người tạo'}
-                      </span>
-                    </div>
-                  </button>
+                        <div>
+                          <h3 className={`text-lg font-black ${isCreator ? 'text-white' : 'text-navy-950'}`}>KIỂM TRA & GỬI QUÁN</h3>
+                          <p className={`text-[11px] mt-1 font-medium leading-relaxed ${isCreator ? 'text-emerald-100' : 'text-slate-600'}`}>
+                            {isCreator
+                              ? 'Xem số người đã đặt / chưa đặt & sao chép 1-click gửi Zalo cho quán.'
+                              : 'Dành riêng cho người tạo nhóm xem và tổng hợp đơn.'}
+                          </p>
+                        </div>
+
+                        <div className={`flex items-center text-xs font-black gap-1 pt-2 border-t ${
+                          isCreator ? 'text-amber-300 border-white/20' : 'text-slate-500 border-slate-100'
+                        }`}>
+                          <span>{isCreator ? 'Xem kết quả & gửi quán ➔' : '🔒 Chỉ dành cho người tạo'}</span>
+                        </div>
+                      </button>
+                    );
+                  })()}
 
                 </div>
 

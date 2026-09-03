@@ -38,17 +38,26 @@ router.get('/today', (req, res) => {
     };
   });
 
-  // 2. Not ordered list (active employees only)
+  // 2. Not ordered list (filtered by group's allowed_employees_json if present)
   const orderedEmpIds = orders.map(o => o.employee_id);
+  let allowedEmpIds = null;
+  if (session.allowed_employees_json) {
+    try { allowedEmpIds = JSON.parse(session.allowed_employees_json); } catch(e){}
+  }
+
   let notOrderedQuery = 'SELECT * FROM employees WHERE is_active = 1';
+  if (Array.isArray(allowedEmpIds) && allowedEmpIds.length > 0) {
+    notOrderedQuery += ` AND id IN (${allowedEmpIds.join(',')})`;
+  }
   if (orderedEmpIds.length > 0) {
     notOrderedQuery += ` AND id NOT IN (${orderedEmpIds.join(',')})`;
   }
-  notOrderedQuery += ' ORDER BY name ASC';
+  notOrderedQuery += ' ORDER BY department ASC, name ASC';
   const notOrderedList = db.prepare(notOrderedQuery).all();
 
   // Summary stats
   const totalEmployees = db.prepare('SELECT COUNT(*) as count FROM employees WHERE is_active = 1').get()?.count || 0;
+  const totalAllowed = Array.isArray(allowedEmpIds) && allowedEmpIds.length > 0 ? allowedEmpIds.length : totalEmployees;
   const orderedCount = orderedList.length;
   const notOrderedCount = notOrderedList.length;
 
@@ -61,6 +70,7 @@ router.get('/today', (req, res) => {
     session,
     stats: {
       totalEmployees,
+      totalAllowed,
       orderedCount,
       notOrderedCount,
       totalCups,
