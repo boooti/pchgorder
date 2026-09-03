@@ -29,8 +29,8 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
   const [sponsorAmount, setSponsorAmount] = useState(0);
 
   // Step 4 Delivery & Cutoff State
-  const [cutoffTime, setCutoffTime] = useState('11:00');
-  const [deliveryTime, setDeliveryTime] = useState('11:30');
+  const [cutoffTime, setCutoffTime] = useState('11:30');
+  const [deliveryTime, setDeliveryTime] = useState('14:30');
   const [recipientName, setRecipientName] = useState('');
   const [recipientPhone, setRecipientPhone] = useState('');
   const [deliveryAddress, setDeliveryAddress] = useState('Cổng sau Công ty Phú Cường - Số 1 Hà Huy Tập');
@@ -159,7 +159,7 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
         recipient_name: recipientName,
         recipient_phone: recipientPhone,
         delivery_address: deliveryAddress || 'Cổng sau Công ty Phú Cường - Số 1 Hà Huy Tập',
-        delivery_time: deliveryTime || '11:30',
+        delivery_time: deliveryTime || '14:30',
         delivery_note: deliveryNote || 'Giao tại cổng sau công ty'
       };
 
@@ -454,7 +454,7 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
                   type="text"
                   value={cutoffTime}
                   onChange={e => setCutoffTime(e.target.value)}
-                  placeholder="VD: 10:30 hoặc 11:00"
+                  placeholder="VD: 11:30"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-amber-300 bg-white font-black text-sm text-navy-950 outline-none"
                 />
                 <p className="text-[11px] text-slate-500 italic">Hạn chốt phải sau thời điểm hiện tại và đúng định dạng HH:MM</p>
@@ -470,7 +470,7 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
                   type="text"
                   value={deliveryTime}
                   onChange={e => setDeliveryTime(e.target.value)}
-                  placeholder="VD: 11:30 hoặc 14:00"
+                  placeholder="VD: 14:30"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-navy-300 bg-white font-black text-sm text-navy-950 outline-none"
                 />
                 <p className="text-[11px] text-slate-500 italic">Thời gian yêu cầu quán mang nước tới công ty (Định dạng HH:MM)</p>

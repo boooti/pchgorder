@@ -59,7 +59,7 @@ export default function MyCreatedOrdersModal({ isOpen, onClose, sessionId, onCan
     msg += `📍 Quán: ${session.store_name || session.storeName || 'Quán Đặt Nước'}\n`;
     msg += `👤 Người nhận: ${session.recipient_name || currentUser?.name} (${session.recipient_phone || 'SĐT'})\n`;
     msg += `🏢 Địa chỉ: ${session.delivery_address || 'Cổng sau Công ty Phú Cường - Số 1 Hà Huy Tập'}\n`;
-    msg += `⏱️ Giờ giao dự kiến: ${session.delivery_time || '10:30'}\n`;
+    msg += `⏱️ Giờ giao dự kiến: ${session.delivery_time || '14:30'}\n`;
     msg += `-----------------------------------\n\n`;
 
     msg += `📋 CHI TIẾT ĐƠN HÀNG (${stats.totalCups} ly):\n`;

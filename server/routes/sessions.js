@@ -91,9 +91,9 @@ router.post('/open', (req, res) => {
   const rName = recipient_name !== undefined ? recipient_name : (defaultDelivery.recipient_name || '');
   const rPhone = recipient_phone !== undefined ? recipient_phone : (defaultDelivery.recipient_phone || '');
   const dAddr = delivery_address !== undefined ? delivery_address : (defaultDelivery.delivery_address || store.address || '');
-  const dTime = delivery_time !== undefined ? delivery_time : (defaultDelivery.delivery_time || '10:30');
+  const dTime = delivery_time !== undefined ? delivery_time : (defaultDelivery.delivery_time || '14:30');
   const dNote = delivery_note !== undefined ? delivery_note : (defaultDelivery.delivery_note || '');
-  const cTime = cutoff_time || '11:00';
+  const cTime = cutoff_time || '11:30';
 
   const sMode = sponsor_mode || 'COMPANY';
   const sName = sponsor_name || '';
