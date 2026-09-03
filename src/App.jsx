@@ -82,6 +82,7 @@ function MainApp() {
 
   // Employee Active Order for today
   const [myTodayOrder, setMyTodayOrder] = useState(null);
+  const [isEditingOrder, setIsEditingOrder] = useState(false);
 
   // Modals state
   const [isUserPickerOpen, setIsUserPickerOpen] = useState(false);
@@ -546,106 +547,142 @@ function MainApp() {
                           }));
                           setCartItems(cartFormatted);
                         }
-                        setUserModeView('SHOW_MENU');
+                        setIsEditingOrder(true);
                         setIsCartOpen(true);
                       }}
                       onDeleteSuccess={() => {
                         setMyTodayOrder(null);
+                        setIsEditingOrder(false);
                         fetchTodaySession();
                       }}
                     />
                   </div>
                 )}
 
-                {/* Search Bar & Flex-Wrap Category Pills Bar */}
-                {sessionData && (
-                  <div className="space-y-2 flex-shrink-0">
-                    <div className="relative w-full">
-                      <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-                      <input
-                        type="text"
-                        placeholder="Tìm món theo tên, hương vị..."
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        className="w-full pl-11 pr-4 py-2.5 bg-white text-navy-950 placeholder-slate-400 text-xs font-bold rounded-xl border border-slate-200/90 shadow-sm outline-none focus:border-navy-600"
-                      />
-                    </div>
+                {/* Show Search Bar & Beverage Menu Grid ONLY IF user hasn't ordered yet OR is currently editing order */}
+                {myTodayOrder && !isEditingOrder ? (
+                  <div className="bg-amber-50/90 p-4 rounded-2xl border border-amber-200 text-center space-y-1.5 my-2 shadow-xs">
+                    <p className="font-extrabold text-amber-950 text-xs">
+                      ℹ️ Bạn đã nạp đơn nước thành công cho phiên hôm nay.
+                    </p>
+                    <p className="text-[11px] text-amber-800 font-medium">
+                      Để thay đổi món hoặc chọn thêm nước mới cho mình/đồng nghiệp, vui lòng bấm nút <b className="text-navy-950 underline">"Sửa món / Thêm món"</b> ở khung đơn trên!
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Editing mode banner */}
+                    {isEditingOrder && (
+                      <div className="bg-navy-950 text-white p-3.5 rounded-2xl flex items-center justify-between shadow-md flex-shrink-0 animate-fade-in border border-amber-400/40">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping flex-shrink-0" />
+                          <span className="font-extrabold text-xs text-amber-300">
+                            ✏️ ĐANG Ở CHẾ ĐỘ SỬA MÓN / THÊM MÓN NƯỚC MỚI
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setIsEditingOrder(false);
+                            clearCart();
+                          }}
+                          className="px-3 py-1 bg-white/20 hover:bg-white/30 text-white font-bold text-xs rounded-xl transition active:scale-95 whitespace-nowrap"
+                        >
+                          ✕ Hủy sửa
+                        </button>
+                      </div>
+                    )}
 
-                    {/* Category Flex-Wrap Pills (No Scroll Bar Needed) */}
-                    <div className="flex flex-wrap items-center gap-1.5 py-1">
-                      <button
-                        onClick={() => setSelectedCategory('ALL')}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition whitespace-nowrap flex-shrink-0 ${
-                          selectedCategory === 'ALL'
-                            ? 'bg-navy-950 text-white shadow-md font-black'
-                            : 'bg-white text-navy-900 hover:bg-slate-100 border border-slate-200/80 shadow-xs'
-                        }`}
-                      >
-                        🌟 Tất cả ({productsData.products.length})
-                      </button>
+                    {/* Search Bar & Flex-Wrap Category Pills Bar */}
+                    {sessionData && (
+                      <div className="space-y-2 flex-shrink-0">
+                        <div className="relative w-full">
+                          <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                          <input
+                            type="text"
+                            placeholder="Tìm món theo tên, hương vị..."
+                            value={searchQuery}
+                            onChange={e => setSearchQuery(e.target.value)}
+                            className="w-full pl-11 pr-4 py-2.5 bg-white text-navy-950 placeholder-slate-400 text-xs font-bold rounded-xl border border-slate-200/90 shadow-sm outline-none focus:border-navy-600"
+                          />
+                        </div>
 
-                      {productsData.categories.map(cat => {
-                        const isSel = selectedCategory === cat.id;
-                        const catUpper = cat.name.toUpperCase();
-                        const emoji = CATEGORY_EMOJI_MAP[catUpper] || '🧋';
-                        const prodCount = productsData.products.filter(p => p.category_id === cat.id).length;
-
-                        return (
+                        {/* Category Flex-Wrap Pills */}
+                        <div className="flex flex-wrap items-center gap-1.5 py-1">
                           <button
-                            key={cat.id}
-                            onClick={() => setSelectedCategory(cat.id)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap flex-shrink-0 ${
-                              isSel
+                            onClick={() => setSelectedCategory('ALL')}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold transition whitespace-nowrap flex-shrink-0 ${
+                              selectedCategory === 'ALL'
                                 ? 'bg-navy-950 text-white shadow-md font-black'
                                 : 'bg-white text-navy-900 hover:bg-slate-100 border border-slate-200/80 shadow-xs'
                             }`}
                           >
-                            {emoji} {cat.name} ({prodCount})
+                            🌟 Tất cả ({productsData.products.length})
                           </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
 
-                {/* Inner Scrollable Products Grid Grouped by Category */}
-                <div className="flex-1 overflow-y-auto pr-1 pb-20 space-y-4">
-                  {productsLoading ? (
-                    <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
-                      {[1, 2, 3, 4, 5, 6].map(n => (
-                        <div key={n} className="h-24 bg-slate-200 rounded-2xl animate-pulse" />
-                      ))}
-                    </div>
-                  ) : groupedCategories.length === 0 ? (
-                    <div className="py-12 text-center text-slate-500 text-xs bg-white/80 rounded-2xl border border-slate-200">
-                      Không tìm thấy món nào phù hợp
-                    </div>
-                  ) : (
-                    groupedCategories.map(catGroup => {
-                      const emoji = CATEGORY_EMOJI_MAP[catGroup.name.toUpperCase()] || '🧋';
-                      return (
-                        <div key={catGroup.id} className="space-y-1.5">
-                          <div className="flex items-center gap-1.5 px-1 border-b border-slate-300 pb-1">
-                            <span className="text-xs font-black text-navy-950 uppercase tracking-wider">
-                              {emoji} {catGroup.name} ({catGroup.products.length})
-                            </span>
-                          </div>
+                          {productsData.categories.map(cat => {
+                            const isSel = selectedCategory === cat.id;
+                            const catUpper = cat.name.toUpperCase();
+                            const emoji = CATEGORY_EMOJI_MAP[catUpper] || '🧋';
+                            const prodCount = productsData.products.filter(p => p.category_id === cat.id).length;
 
-                          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1.5">
-                            {catGroup.products.map(product => (
-                              <ProductCard
-                                key={product.id}
-                                product={product}
-                                categoryName={catGroup.name}
-                                onSelect={(prod) => setCustomizeProduct(prod)}
-                              />
-                            ))}
-                          </div>
+                            return (
+                              <button
+                                key={cat.id}
+                                onClick={() => setSelectedCategory(cat.id)}
+                                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap flex-shrink-0 ${
+                                  isSel
+                                    ? 'bg-navy-950 text-white shadow-md font-black'
+                                    : 'bg-white text-navy-900 hover:bg-slate-100 border border-slate-200/80 shadow-xs'
+                                }`}
+                              >
+                                {emoji} {cat.name} ({prodCount})
+                              </button>
+                            );
+                          })}
                         </div>
-                      );
-                    })
-                  )}
-                </div>
+                      </div>
+                    )}
+
+                    {/* Inner Scrollable Products Grid Grouped by Category */}
+                    <div className="flex-1 overflow-y-auto pr-1 pb-20 space-y-4">
+                      {productsLoading ? (
+                        <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                          {[1, 2, 3, 4, 5, 6].map(n => (
+                            <div key={n} className="h-24 bg-slate-200 rounded-2xl animate-pulse" />
+                          ))}
+                        </div>
+                      ) : groupedCategories.length === 0 ? (
+                        <div className="py-12 text-center text-slate-500 text-xs bg-white/80 rounded-2xl border border-slate-200">
+                          Không tìm thấy món nào phù hợp
+                        </div>
+                      ) : (
+                        groupedCategories.map(catGroup => {
+                          const emoji = CATEGORY_EMOJI_MAP[catGroup.name.toUpperCase()] || '🧋';
+                          return (
+                            <div key={catGroup.id} className="space-y-1.5">
+                              <div className="flex items-center gap-1.5 px-1 border-b border-slate-300 pb-1">
+                                <span className="text-xs font-black text-navy-950 uppercase tracking-wider">
+                                  {emoji} {catGroup.name} ({catGroup.products.length})
+                                </span>
+                              </div>
+
+                              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1.5">
+                                {catGroup.products.map(product => (
+                                  <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                    categoryName={catGroup.name}
+                                    onSelect={(prod) => setCustomizeProduct(prod)}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  </>
+                )}
 
               </div>
             )}
@@ -736,6 +773,7 @@ function MainApp() {
         sessionId={sessionData?.id}
         isSessionClosed={isSessionClosed}
         onOrderSubmitted={() => {
+          setIsEditingOrder(false);
           fetchTodaySession();
           if (currentUser && sessionData) fetchMyOrder(sessionData.id, currentUser.id);
         }}
