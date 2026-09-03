@@ -19,54 +19,52 @@ db.exec('DELETE FROM employees');
 // Default Delivery Address for all stores
 const DEFAULT_DELIVERY_ADDRESS = 'Cổng sau công ty Phú Cường - Số 1 Hà Huy Tập, Rạch Giá';
 
-// 1. Official 40 Employees
+// 1. Official 38 Employees
 const employeesData = [
-  { code: 'NV001', name: 'Lâm Hoàng Lam' },
-  { code: 'NV002', name: 'Vũ Đăng Trình' },
-  { code: 'NV003', name: 'Nguyễn Tam Giác' },
-  { code: 'NV004', name: 'Trần Trung Tiến' },
-  { code: 'NV005', name: 'Trương Vĩnh Thế' },
-  { code: 'NV006', name: 'Du Vinh Huê' },
-  { code: 'NV007', name: 'Lê Minh Đăng' },
-  { code: 'NV008', name: 'Phan Văn Nhân' },
-  { code: 'NV009', name: 'Đoàn Tuấn Anh' },
-  { code: 'NV010', name: 'Nguyễn Văn Chiến' },
-  { code: 'NV011', name: 'Trần Thanh Tiến' },
-  { code: 'NV012', name: 'Nguyễn Ngọc Nguyên' },
-  { code: 'NV013', name: 'Trần Thị Hương' },
-  { code: 'NV014', name: 'Trần Thị Trinh' },
-  { code: 'NV015', name: 'Hồ Huy Toàn' },
-  { code: 'NV016', name: 'Lê Long Giang' },
-  { code: 'NV017', name: 'Thị Yến Linh' },
-  { code: 'NV018', name: 'Nguyễn Văn Công' },
-  { code: 'NV019', name: 'Trần Văn Nhựt Cường' },
-  { code: 'NV020', name: 'Trương Đình Thi' },
-  { code: 'NV021', name: 'Trần Văn Sua' },
-  { code: 'NV022', name: 'Nguyễn Thị Minh Thư' },
-  { code: 'NV023', name: 'Hưng Tấn Đạt' },
-  { code: 'NV024', name: 'Nguyễn Hồng Ái' },
-  { code: 'NV025', name: 'Đồng Hữu Phú' },
-  { code: 'NV026', name: 'Trần Minh Đăng' },
-  { code: 'NV027', name: 'Dư Văn Đạt' },
-  { code: 'NV028', name: 'Nguyễn Kiều Tiên' },
-  { code: 'NV029', name: 'Phạm Bình An' },
-  { code: 'NV030', name: 'Huỳnh Tấn Lộc' },
-  { code: 'NV031', name: 'Lâm Thiên Phú' },
-  { code: 'NV032', name: 'Trần Thị Diễm Linh' },
-  { code: 'NV033', name: 'Vũ Huỳnh Như Ý' },
-  { code: 'NV034', name: 'Nguyễn Phương Loan' },
-  { code: 'NV035', name: 'Trần Chí Hậu' },
-  { code: 'NV036', name: 'Trần Võ Phương Nghi' },
-  { code: 'NV037', name: 'Trần Thị Nhung' },
-  { code: 'NV038', name: 'Đào Thị Huyền Trân' },
-  { code: 'NV039', name: 'Nguyễn Tất Vũ' },
-  { code: 'NV040', name: 'Nguyễn Thị Kim Yến' }
+  { code: '889966', name: 'Huỳnh Thái Lel', department: 'Văn phòng' },
+  { code: '009544', name: 'Lâm Hoàng Lam', department: 'Văn phòng' },
+  { code: '995381', name: 'Vũ Đăng Trình', department: 'BQLDA' },
+  { code: '699298', name: 'Nguyễn Tam Giác', department: 'BQLDA' },
+  { code: '006620', name: 'Trần Trung Tiến', department: 'BQLDA' },
+  { code: '013137', name: 'Trương Vĩnh Thế', department: 'BQLDA' },
+  { code: '009044', name: 'Du Vinh Huê', department: 'BQLDA' },
+  { code: '000276', name: 'Lê Minh Đăng', department: 'BQLDA' },
+  { code: '010861', name: 'Phan Văn Nhân', department: 'BQLDA' },
+  { code: '000088', name: 'Đoàn Tuấn Anh', department: 'BQLDA' },
+  { code: '000485', name: 'Nguyễn Văn Chiến', department: 'BQLDA' },
+  { code: '010111', name: 'Trần Thanh Tiến', department: 'BQLDA' },
+  { code: '690806', name: 'Nguyễn Ngọc Nguyên', department: 'Văn phòng' },
+  { code: '708891', name: 'Trần Thị Hương', department: 'Văn phòng' },
+  { code: '868109', name: 'Trần Thị Trinh', department: 'Văn phòng' },
+  { code: '012781', name: 'Hồ Huy Toàn', department: 'Văn phòng' },
+  { code: '015242', name: 'Lê Long Giang', department: 'Văn phòng' },
+  { code: '007659', name: 'Thị Yến Linh', department: 'Văn phòng' },
+  { code: '163153', name: 'Nguyễn Văn Công', department: 'Văn phòng' },
+  { code: '000227', name: 'Trần Văn Nhựt Cường', department: 'Văn phòng' },
+  { code: '153954', name: 'Trương Đình Thi', department: 'Văn phòng' },
+  { code: '362279', name: 'Trần Văn Sua', department: 'Văn phòng' },
+  { code: '012979', name: 'Nguyễn Thị Minh Thư', department: 'Văn phòng' },
+  { code: '935138', name: 'Hưng Tấn Đạt', department: 'Văn phòng' },
+  { code: '991783', name: 'Nguyễn Hồng Ái', department: 'Văn phòng' },
+  { code: '014314', name: 'Đồng Hữu Phú', department: 'Văn phòng' },
+  { code: '007925', name: 'Trần Minh Đăng', department: 'Văn phòng' },
+  { code: '000334', name: 'Dư Văn Đạt', department: 'Văn phòng' },
+  { code: '008209', name: 'Nguyễn Kiều Tiên', department: 'Văn phòng' },
+  { code: '003115', name: 'Phạm Bình An', department: 'Văn phòng' },
+  { code: '006262', name: 'Huỳnh Tấn Lộc', department: 'Văn phòng' },
+  { code: '010743', name: 'Lâm Thiên Phú', department: 'Văn phòng' },
+  { code: '273552', name: 'Trần Thị Diễm Linh', department: 'Văn phòng' },
+  { code: '821653', name: 'Vũ Huỳnh Như Ý', department: 'Văn phòng' },
+  { code: '662750', name: 'Nguyễn Phương Loan', department: 'Văn phòng' },
+  { code: '012565', name: 'Trần Võ Phương Nghi', department: 'Văn phòng' },
+  { code: '024378', name: 'Trần Thị Nhung', department: 'Văn phòng' },
+  { code: '015218', name: 'Đào Thị Huyền Trân', department: 'Văn phòng' }
 ];
 
-const insertEmp = db.prepare('INSERT INTO employees (code, name) VALUES (?, ?)');
+const insertEmp = db.prepare('INSERT INTO employees (code, name, department) VALUES (?, ?, ?)');
 const empIds = [];
 for (const emp of employeesData) {
-  const info = insertEmp.run(emp.code, emp.name);
+  const info = insertEmp.run(emp.code, emp.name, emp.department);
   empIds.push({ id: info.lastInsertRowid, ...emp });
 }
 

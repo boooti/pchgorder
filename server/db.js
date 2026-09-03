@@ -244,6 +244,7 @@ export function initDb() {
   try { dbWrapper.exec("ALTER TABLE daily_order_sessions ADD COLUMN sponsor_amount INTEGER DEFAULT 0"); } catch(e){}
   try { dbWrapper.exec("ALTER TABLE daily_order_sessions ADD COLUMN allowed_employees_json TEXT"); } catch(e){}
   try { dbWrapper.exec("ALTER TABLE daily_order_sessions ADD COLUMN created_by_employee_id INTEGER"); } catch(e){}
+  try { dbWrapper.exec("ALTER TABLE employees ADD COLUMN department TEXT"); } catch(e){}
   try { dbWrapper.exec("ALTER TABLE orders ADD COLUMN ordered_by_employee_id INTEGER"); } catch(e){}
   try { dbWrapper.exec("ALTER TABLE orders ADD COLUMN ordered_by_name TEXT"); } catch(e){}
 

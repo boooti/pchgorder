@@ -235,19 +235,68 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
                 <label className="font-extrabold uppercase tracking-wider text-navy-400 block whitespace-nowrap">
                   1. Chọn Thành Viên Nhóm ({selectedEmpIds.length} người được chọn)
                 </label>
+              </div>
+
+              {/* Quick Department Selection Pills */}
+              <div className="flex items-center gap-1.5 py-1 overflow-x-auto scrollbar-none">
+                <span className="text-[11px] font-bold text-slate-500 whitespace-nowrap">Chọn nhanh:</span>
+                
                 <button
                   type="button"
-                  onClick={handleSelectAll}
-                  className="text-xs font-extrabold text-navy-800 hover:text-navy-950 underline whitespace-nowrap"
+                  onClick={() => {
+                    const vpIds = employees.filter(e => (e.department || '').toLowerCase().includes('văn phòng')).map(e => e.id);
+                    setSelectedEmpIds(vpIds);
+                  }}
+                  className="px-3 py-1 bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs rounded-xl shadow-xs transition whitespace-nowrap active:scale-95"
                 >
-                  {selectedEmpIds.length === employees.length ? 'Bỏ chọn hết' : 'Chọn tất cả'}
+                  🏢 VP (Văn phòng)
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const banIds = employees.filter(e => {
+                      const dept = (e.department || '').toUpperCase();
+                      return dept.includes('BQLDA') || dept.includes('BAN');
+                    }).map(e => e.id);
+                    setSelectedEmpIds(banIds);
+                  }}
+                  className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-navy-950 font-black text-xs rounded-xl shadow-xs transition whitespace-nowrap active:scale-95"
+                >
+                  🏗️ BAN (BQLDA)
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const allIds = employees.map(e => e.id);
+                    setSelectedEmpIds(allIds);
+                  }}
+                  className="px-3 py-1 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow-xs transition whitespace-nowrap active:scale-95"
+                >
+                  ✨ Tất cả ({employees.length})
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (currentUser) {
+                      setSelectedEmpIds([currentUser.id]);
+                    } else {
+                      setSelectedEmpIds([]);
+                    }
+                  }}
+                  className="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition whitespace-nowrap active:scale-95 ml-auto"
+                >
+                  ✕ Bỏ chọn
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto p-1 bg-slate-50 rounded-2xl border border-slate-200">
+              <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto p-1.5 bg-slate-50 rounded-2xl border border-slate-200">
                 {employees.map(emp => {
                   const isCreator = currentUser && emp.id === currentUser.id;
                   const isSelected = selectedEmpIds.includes(emp.id);
+                  const isVP = (emp.department || '').toLowerCase().includes('văn phòng');
                   return (
                     <button
                       type="button"
@@ -260,11 +309,18 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
                       }`}
                     >
                       <div className="min-w-0">
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
                           <p className="font-bold text-xs truncate">{emp.name}</p>
+                          <span className={`text-[9px] font-black px-1.5 py-0.2 rounded ${
+                            isSelected
+                              ? 'bg-white/20 text-amber-300'
+                              : isVP ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-amber-50 text-amber-800 border border-amber-200'
+                          }`}>
+                            {emp.department || 'VP'}
+                          </span>
                         </div>
                         <p className={`text-[10px] ${isSelected ? 'text-amber-300' : 'text-slate-400'}`}>
-                          {emp.code} {isCreator && '· (Người tạo - Mặc định)'}
+                          MNV: {emp.code} {isCreator && '· (Người tạo)'}
                         </p>
                       </div>
                       {isSelected && <CheckCircle2 className="w-4 h-4 text-amber-400 flex-shrink-0 ml-1" />}
