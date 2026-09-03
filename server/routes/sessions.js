@@ -182,10 +182,10 @@ router.post('/cancel', (req, res) => {
   orders.forEach(o => {
     db.prepare('DELETE FROM order_items WHERE order_id = ?').run(o.id);
   });
-  db.prepare('DELETE FROM orders WHERE session_id = ?').run(sessionId);
-  db.prepare("UPDATE daily_order_sessions SET status = 'CLOSED' WHERE id = ?").run(sessionId);
+  // DELETE the session record completely from daily_order_sessions
+  db.prepare("DELETE FROM daily_order_sessions WHERE id = ?").run(sessionId);
 
-  res.json({ success: true, message: 'Đã hủy nhóm order thành công!' });
+  res.json({ success: true, message: 'Đã hủy nhóm order và xóa phiên thành công!' });
 });
 
 // Reopen Session
