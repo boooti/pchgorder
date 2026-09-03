@@ -276,7 +276,7 @@ export default function CartDrawer({ sessionId, isSessionClosed, onOrderSubmitte
               {subsidy > 0 && (
                 <div className="flex justify-between text-emerald-600 font-bold">
                   <span className="flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0" /> Trợ giá công ty:
+                    <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0" /> Bao 100%:
                   </span>
                   <span className="whitespace-nowrap">-{new Intl.NumberFormat('vi-VN').format(subsidy)}đ</span>
                 </div>

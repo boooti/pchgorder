@@ -94,7 +94,7 @@ export default function OrderSuccessModal({ order, isSessionClosed, onEdit, onDe
           </div>
           {order.subsidy_amount > 0 && (
             <div className="flex justify-between text-emerald-600 font-semibold">
-              <span>Công ty trợ giá:</span>
+              <span>{order.sponsor_name ? `${order.sponsor_name} bao 100%` : 'Đã bao 100%'}:</span>
               <span className="whitespace-nowrap">-{new Intl.NumberFormat('vi-VN').format(order.subsidy_amount)}đ</span>
             </div>
           )}
