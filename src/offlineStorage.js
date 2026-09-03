@@ -969,6 +969,8 @@ export const offlineStorage = {
       id: existingIdx > -1 ? orders[existingIdx].id : Date.now(),
       session_id: Number(data.sessionId),
       employee_id: Number(data.employeeId),
+      ordered_by_employee_id: Number(data.orderedByEmployeeId || data.employeeId),
+      ordered_by_name: data.orderedByName || '',
       total_amount: grandTotal,
       subsidy_amount: subsidy,
       employee_pay_amount: pay,

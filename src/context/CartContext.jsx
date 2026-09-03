@@ -12,15 +12,20 @@ export function CartProvider({ children }) {
   // Add item to cart
   const addToCart = (item) => {
     setCartItems(prev => {
-      // Check if exact same item configuration exists
-      const existingIdx = prev.findIndex(i => 
-        i.product_name === item.product_name &&
-        i.size === item.size &&
-        i.sugar_option === item.sugar_option &&
-        i.ice_option === item.ice_option &&
-        JSON.stringify(i.toppings) === JSON.stringify(item.toppings) &&
-        (i.note || '') === (item.note || '')
-      );
+      // Check if exact same item configuration AND recipient exists
+      const itemRecipientId = item.recipientEmployee ? item.recipientEmployee.id : null;
+      const existingIdx = prev.findIndex(i => {
+        const prevRecipientId = i.recipientEmployee ? i.recipientEmployee.id : null;
+        return (
+          i.product_name === item.product_name &&
+          i.size === item.size &&
+          i.sugar_option === item.sugar_option &&
+          i.ice_option === item.ice_option &&
+          JSON.stringify(i.toppings) === JSON.stringify(item.toppings) &&
+          (i.note || '') === (item.note || '') &&
+          prevRecipientId === itemRecipientId
+        );
+      });
 
       if (existingIdx > -1) {
         const copy = [...prev];
