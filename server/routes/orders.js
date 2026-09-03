@@ -92,14 +92,22 @@ router.get('/my-today', (req, res) => {
 
   const empId = Number(employeeId);
 
+  // Resolve live empId by ID or name if needed
+  let realEmpId = empId;
+  const liveEmp = db.prepare('SELECT id FROM employees WHERE id = ?').get(empId);
+  if (!liveEmp && req.query.employeeName) {
+    const matched = db.prepare('SELECT id FROM employees WHERE name = ?').get(req.query.employeeName);
+    if (matched) realEmpId = matched.id;
+  }
+
   // Find all orders in this session where this employee is either the owner OR the order placer
   const orders = db.prepare(`
     SELECT o.*, e.name as employee_name, e.department as employee_department
     FROM orders o
-    JOIN employees e ON o.employee_id = e.id
+    LEFT JOIN employees e ON o.employee_id = e.id
     WHERE o.session_id = ? AND (o.employee_id = ? OR o.ordered_by_employee_id = ?)
     ORDER BY o.created_at ASC
-  `).all(sessionId, empId, empId);
+  `).all(sessionId, realEmpId, realEmpId);
 
   if (!orders || orders.length === 0) return res.json({ hasOrder: false });
 
@@ -110,14 +118,14 @@ router.get('/my-today', (req, res) => {
   let employeePayAmount = 0;
 
   for (const order of orders) {
-    const isGium = Number(order.employee_id) !== Number(empId);
+    const isGium = Number(order.employee_id) !== Number(realEmpId);
     const items = db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(order.id);
     const parsed = items.map(item => ({
       ...item,
       toppings: item.toppings_snapshot_json ? JSON.parse(item.toppings_snapshot_json) : [],
       recipient_id: order.employee_id,
-      recipient_name: order.employee_name,
-      recipient_department: order.employee_department,
+      recipient_name: order.employee_name || order.note || 'Nhân viên',
+      recipient_department: order.employee_department || 'VP',
       is_gium: isGium
     }));
 
@@ -203,19 +211,32 @@ router.post('/', (req, res) => {
     }
   }
 
-  // 2. Check existing order for target employee
-  const existingOrder = db.prepare('SELECT * FROM orders WHERE session_id = ? AND employee_id = ?').get(sessionId, employeeId);
-  
-  const targetEmp = db.prepare('SELECT name FROM employees WHERE id = ?').get(employeeId);
+  // 2. Resolve live target & submitter employee IDs (handles re-seeded database IDs)
+  let realEmpId = Number(employeeId);
+  let targetEmp = db.prepare('SELECT * FROM employees WHERE id = ?').get(realEmpId);
+  if (!targetEmp && req.body.employeeCode) {
+    targetEmp = db.prepare('SELECT * FROM employees WHERE code = ?').get(req.body.employeeCode);
+  }
+  if (!targetEmp && req.body.employeeName) {
+    targetEmp = db.prepare('SELECT * FROM employees WHERE name = ?').get(req.body.employeeName);
+  }
+  if (targetEmp) realEmpId = targetEmp.id;
+
   const targetEmpName = targetEmp ? targetEmp.name : 'đồng nghiệp';
 
-  const submitterEmpId = orderedByEmployeeId || employeeId;
+  let realSubmitterEmpId = orderedByEmployeeId ? Number(orderedByEmployeeId) : realEmpId;
   let submitterName = orderedByName || '';
-  if (!submitterName && submitterEmpId) {
-    const sEmp = db.prepare('SELECT name FROM employees WHERE id = ?').get(submitterEmpId);
-    if (sEmp) submitterName = sEmp.name;
+  if (orderedByName) {
+    const sEmp = db.prepare('SELECT * FROM employees WHERE name = ?').get(orderedByName);
+    if (sEmp) {
+      realSubmitterEmpId = sEmp.id;
+      if (!submitterName) submitterName = sEmp.name;
+    }
   }
 
+  // Check existing order for target employee
+  const existingOrder = db.prepare('SELECT * FROM orders WHERE session_id = ? AND employee_id = ?').get(sessionId, realEmpId);
+  
   if (existingOrder) {
     // Delete old order items and update existing order
     db.prepare('DELETE FROM order_items WHERE order_id = ?').run(existingOrder.id);
@@ -288,7 +309,7 @@ router.post('/', (req, res) => {
 
   // Build combined note if ordered on behalf
   let finalNote = note || '';
-  if (submitterEmpId && Number(submitterEmpId) !== Number(employeeId) && submitterName) {
+  if (realSubmitterEmpId && Number(realSubmitterEmpId) !== Number(realEmpId) && submitterName) {
     finalNote = finalNote ? `${finalNote} (Đặt giùm bởi ${submitterName})` : `(Đặt giùm bởi ${submitterName})`;
   }
 
@@ -299,12 +320,12 @@ router.post('/', (req, res) => {
       UPDATE orders
       SET total_amount = ?, subsidy_amount = ?, employee_pay_amount = ?, note = ?, ordered_by_employee_id = ?, ordered_by_name = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
-    `).run(grandTotal, subsidyAmount, employeePayAmount, finalNote, submitterEmpId, submitterName, orderId);
+    `).run(grandTotal, subsidyAmount, employeePayAmount, finalNote, realSubmitterEmpId, submitterName, orderId);
   } else {
     const oRes = db.prepare(`
       INSERT INTO orders (session_id, employee_id, ordered_by_employee_id, ordered_by_name, total_amount, subsidy_amount, employee_pay_amount, note)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(sessionId, employeeId, submitterEmpId, submitterName, grandTotal, subsidyAmount, employeePayAmount, finalNote);
+    `).run(sessionId, realEmpId, realSubmitterEmpId, submitterName, grandTotal, subsidyAmount, employeePayAmount, finalNote);
     orderId = oRes.lastInsertRowid;
   }
 

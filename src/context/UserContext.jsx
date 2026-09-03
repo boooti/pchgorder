@@ -12,6 +12,26 @@ export function UserProvider({ children }) {
     }
   });
 
+  // Auto-sync saved currentUser against live employee list (handles re-seeded IDs)
+  useEffect(() => {
+    if (currentUser && currentUser.name) {
+      import('../api').then(({ api }) => {
+        api.getEmployees().then(emps => {
+          if (Array.isArray(emps) && emps.length > 0) {
+            const matched = emps.find(e => 
+              (currentUser.code && e.code === currentUser.code) ||
+              (e.name && e.name.trim().toLowerCase() === currentUser.name.trim().toLowerCase())
+            );
+            if (matched && matched.id !== currentUser.id) {
+              setCurrentUser(matched);
+              localStorage.setItem('company_drink_employee', JSON.stringify(matched));
+            }
+          }
+        }).catch(() => {});
+      });
+    }
+  }, []);
+
   const selectUser = (employee) => {
     setCurrentUser(employee);
     if (employee) {
