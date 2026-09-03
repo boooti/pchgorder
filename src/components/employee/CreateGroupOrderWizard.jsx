@@ -269,7 +269,7 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <label className="font-extrabold uppercase tracking-wider text-navy-400 block whitespace-nowrap">
-                  1. Chọn Thành Viên Nhóm ({selectedEmpIds.length} người được chọn)
+                  1. Chọn Thành Viên Nhóm ({selectedEmpIds.length} người được chọn, bao gồm bạn)
                 </label>
               </div>
 
@@ -281,11 +281,13 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
                   type="button"
                   onClick={() => {
                     const vpIds = employees.filter(e => (e.department || '').toLowerCase().includes('văn phòng')).map(e => e.id);
-                    setSelectedEmpIds(vpIds);
+                    const creatorId = currentUser ? currentUser.id : null;
+                    const combined = creatorId && !vpIds.includes(creatorId) ? [...vpIds, creatorId] : vpIds;
+                    setSelectedEmpIds(combined);
                   }}
                   className="px-3 py-1 bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs rounded-xl shadow-xs transition whitespace-nowrap active:scale-95"
                 >
-                  🏢 VP (Văn phòng)
+                  🏢 VP (+ Người tạo)
                 </button>
 
                 <button
@@ -295,11 +297,13 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
                       const dept = (e.department || '').toUpperCase();
                       return dept.includes('BQLDA') || dept.includes('BAN');
                     }).map(e => e.id);
-                    setSelectedEmpIds(banIds);
+                    const creatorId = currentUser ? currentUser.id : null;
+                    const combined = creatorId && !banIds.includes(creatorId) ? [...banIds, creatorId] : banIds;
+                    setSelectedEmpIds(combined);
                   }}
                   className="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-navy-950 font-black text-xs rounded-xl shadow-xs transition whitespace-nowrap active:scale-95"
                 >
-                  🏗️ BAN (BQLDA)
+                  🏗️ BAN (+ Người tạo)
                 </button>
 
                 <button

@@ -10,7 +10,7 @@ export default function EmployeeManager() {
 
   // Edit / Create modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEmp, setEditingEmp] = useState({ code: '', name: '' });
+  const [editingEmp, setEditingEmp] = useState({ code: '', name: '', department: 'Văn phòng' });
 
   const fetchEmployees = () => {
     setLoading(true);
@@ -70,7 +70,8 @@ export default function EmployeeManager() {
 
   const filtered = employees.filter(e =>
     e.name.toLowerCase().includes(search.toLowerCase()) ||
-    e.code.toLowerCase().includes(search.toLowerCase())
+    e.code.toLowerCase().includes(search.toLowerCase()) ||
+    (e.department || '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -80,12 +81,12 @@ export default function EmployeeManager() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-extrabold text-slate-800">Quản lý Nhân Viên ({employees.length})</h2>
-          <p className="text-xs text-slate-500">Quản lý danh sách nhân viên công ty. Nhân viên tạm nghỉ không tính vào danh sách Chưa order.</p>
+          <p className="text-xs text-slate-500">Quản lý danh sách nhân viên & phân loại bộ phận (Văn phòng / Ban BQLDA).</p>
         </div>
 
         <button
           onClick={() => {
-            setEditingEmp({ code: '', name: '' });
+            setEditingEmp({ code: '', name: '', department: 'Văn phòng' });
             setIsModalOpen(true);
           }}
           className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs rounded-2xl shadow-md transition"
@@ -99,7 +100,7 @@ export default function EmployeeManager() {
         <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
         <input
           type="text"
-          placeholder="Tìm theo tên hoặc mã NV..."
+          placeholder="Tìm theo tên, mã NV, hoặc bộ phận (VP, Ban)..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="w-full pl-10 pr-4 py-2.5 bg-white text-slate-800 placeholder-slate-400 text-xs rounded-2xl border border-slate-200 outline-none focus:border-brand-500 shadow-sm"
@@ -115,6 +116,7 @@ export default function EmployeeManager() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {filtered.map(emp => {
             const isActive = emp.is_active === 1;
+            const isVP = (emp.department || '').toLowerCase().includes('văn phòng');
             return (
               <div
                 key={emp.id}
@@ -129,10 +131,15 @@ export default function EmployeeManager() {
                     {emp.name.charAt(0)}
                   </div>
                   <div>
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <h4 className="font-bold text-xs text-slate-800">{emp.name}</h4>
-                      <span className="text-[10px] font-mono text-slate-400">{emp.code}</span>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                        isVP ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-900'
+                      }`}>
+                        {emp.department || 'Văn phòng'}
+                      </span>
                     </div>
+                    <span className="text-[10px] font-mono text-slate-400">MNV: {emp.code}</span>
                   </div>
                 </div>
 
@@ -148,7 +155,10 @@ export default function EmployeeManager() {
 
                   <button
                     onClick={() => {
-                      setEditingEmp(emp);
+                      setEditingEmp({
+                        ...emp,
+                        department: emp.department || 'Văn phòng'
+                      });
                       setIsModalOpen(true);
                     }}
                     className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
@@ -186,19 +196,31 @@ export default function EmployeeManager() {
                   placeholder="VD: Nguyễn Văn An"
                   value={editingEmp.name}
                   onChange={e => setEditingEmp({ ...editingEmp, name: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:border-brand-500"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:border-brand-500 font-medium"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-slate-700 block mb-1">Mã NV (Tùy chọn)</label>
+                <label className="font-bold text-slate-700 block mb-1">Mã NV (Employee code)</label>
                 <input
                   type="text"
-                  placeholder="VD: NV021"
+                  placeholder="VD: 889966"
                   value={editingEmp.code}
                   onChange={e => setEditingEmp({ ...editingEmp, code: e.target.value })}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:border-brand-500"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:border-brand-500 font-mono"
                 />
+              </div>
+
+              <div>
+                <label className="font-bold text-slate-700 block mb-1">Bộ phận / Khoa phòng <span className="text-red-500">*</span></label>
+                <select
+                  value={editingEmp.department}
+                  onChange={e => setEditingEmp({ ...editingEmp, department: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none focus:border-brand-500 font-bold bg-white"
+                >
+                  <option value="Văn phòng">🏢 Văn phòng (VP)</option>
+                  <option value="BQLDA">🏗️ Ban QLDA (BQLDA / BAN)</option>
+                </select>
               </div>
 
               <div className="pt-3 flex gap-2 justify-end">
