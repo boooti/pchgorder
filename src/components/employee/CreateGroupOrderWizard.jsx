@@ -40,6 +40,27 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
   useEffect(() => {
     if (isOpen) {
       setStep(1);
+
+      // Calculate dynamic default cutoff time (Now + 2 hours)
+      const now = new Date();
+      const cutoffDate = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+      const cH = String(cutoffDate.getHours()).padStart(2, '0');
+      const cM = String(cutoffDate.getMinutes()).padStart(2, '0');
+      const computedCutoff = `${cH}:${cM}`;
+
+      setCutoffTime(computedCutoff);
+      setDeliveryTime('14:30');
+
+      // Check if computed cutoff time is LATER than 14:30
+      const isLate = cutoffDate.getHours() > 14 || (cutoffDate.getHours() === 14 && cutoffDate.getMinutes() > 30);
+      
+      if (isLate) {
+        setSessionDateOption('TOMORROW');
+        showToast('ℹ️ Do giờ chốt order (sau 2 tiếng) trễ hơn 14:30, hệ thống đã tự động chuyển nhóm order sang HÔM SAU.', 'info');
+      } else {
+        setSessionDateOption('TODAY');
+      }
+
       api.getEmployees().then(emps => {
         const active = emps.filter(e => e.is_active);
         setEmployees(active);
