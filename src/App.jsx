@@ -530,7 +530,25 @@ function MainApp() {
                     <OrderSuccessModal
                       order={myTodayOrder}
                       isSessionClosed={isSessionClosed}
-                      onEdit={() => setIsCartOpen(true)}
+                      onEdit={() => {
+                        if (myTodayOrder && myTodayOrder.items) {
+                          const cartFormatted = myTodayOrder.items.map(item => ({
+                            product_id: item.product_id,
+                            product_name: item.product_name_snapshot,
+                            size: item.size_snapshot,
+                            unit_price: item.unit_price_snapshot,
+                            quantity: item.quantity,
+                            sugar_option: item.sugar_option,
+                            ice_option: item.ice_option,
+                            toppings: item.toppings || [],
+                            note: item.note || '',
+                            subtotal: item.subtotal
+                          }));
+                          setCartItems(cartFormatted);
+                        }
+                        setUserModeView('SHOW_MENU');
+                        setIsCartOpen(true);
+                      }}
                       onDeleteSuccess={() => {
                         setMyTodayOrder(null);
                         fetchTodaySession();
