@@ -863,17 +863,46 @@ export const offlineStorage = {
   getMyTodayOrder: (sessionId, employeeId) => {
     initOfflineStorage();
     const orders = loadData(STORAGE_KEYS.ORDERS, INITIAL_ORDERS);
-    const order = orders.find(o => o.session_id === Number(sessionId) && o.employee_id === Number(employeeId));
-    if (!order) return { hasOrder: false };
+    const empId = Number(employeeId);
+    const myOrders = orders.filter(o => o.session_id === Number(sessionId) && (o.employee_id === empId || o.ordered_by_employee_id === empId));
+    if (!myOrders || myOrders.length === 0) return { hasOrder: false };
+
+    const employees = loadData(STORAGE_KEYS.EMPLOYEES, INITIAL_EMPLOYEES);
+
+    let combinedItems = [];
+    let totalAmount = 0;
+    let subsidyAmount = 0;
+    let employeePayAmount = 0;
+
+    for (const order of myOrders) {
+      const isGium = order.employee_id !== empId;
+      const targetEmp = employees.find(e => e.id === order.employee_id);
+      const items = (order.items || []).map(i => ({
+        ...i,
+        toppings: i.toppings_snapshot_json ? JSON.parse(i.toppings_snapshot_json) : [],
+        recipient_id: order.employee_id,
+        recipient_name: targetEmp ? targetEmp.name : 'NV',
+        recipient_department: targetEmp ? targetEmp.department : 'VP',
+        is_gium: isGium
+      }));
+
+      combinedItems.push(...items);
+      totalAmount += order.total_amount || 0;
+      subsidyAmount += order.subsidy_amount || 0;
+      employeePayAmount += order.employee_pay_amount || 0;
+    }
 
     return {
       hasOrder: true,
       order: {
-        ...order,
-        items: order.items.map(i => ({
-          ...i,
-          toppings: i.toppings_snapshot_json ? JSON.parse(i.toppings_snapshot_json) : []
-        }))
+        id: myOrders[0].id,
+        session_id: Number(sessionId),
+        employee_id: empId,
+        total_amount: totalAmount,
+        subsidy_amount: subsidyAmount,
+        employee_pay_amount: employeePayAmount,
+        items: combinedItems,
+        orders_count: myOrders.length
       }
     };
   },

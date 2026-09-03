@@ -345,35 +345,55 @@ function MainApp() {
 
                 {/* Active Employee Order Summary Card on Entry Screen */}
                 {myTodayOrder && (
-                  <OrderSuccessModal
-                    order={myTodayOrder}
-                    isSessionClosed={isSessionClosed}
-                    onEdit={() => {
-                      if (myTodayOrder && myTodayOrder.items) {
-                        const cartFormatted = myTodayOrder.items.map(item => ({
-                          product_id: item.product_id,
-                          product_name: item.product_name_snapshot,
-                          size: item.size_snapshot,
-                          unit_price: item.unit_price_snapshot,
-                          quantity: item.quantity,
-                          sugar_option: item.sugar_option,
-                          ice_option: item.ice_option,
-                          toppings: item.toppings || [],
-                          note: item.note || '',
-                          subtotal: item.subtotal
-                        }));
-                        setCartItems(cartFormatted);
-                      }
-                      setUserModeView('SHOW_MENU');
-                      setIsEditingOrder(true);
-                      setIsCartOpen(true);
-                    }}
-                    onDeleteSuccess={() => {
-                      setMyTodayOrder(null);
-                      setIsEditingOrder(false);
-                      fetchTodaySession();
-                    }}
-                  />
+                  <div className="bg-gradient-to-r from-emerald-600 via-emerald-600 to-emerald-700 text-white p-4 rounded-3xl shadow-xl border border-emerald-400/80 flex items-center justify-between gap-3 animate-slide-up">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-11 h-11 rounded-2xl bg-white text-emerald-800 flex items-center justify-center font-black shadow-md flex-shrink-0">
+                        <CheckCircle2 className="w-7 h-7" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 block">
+                          Trạng thái order của bạn hôm nay
+                        </span>
+                        <h4 className="font-extrabold text-sm text-white leading-snug">
+                          ĐÃ ĐẶT {myTodayOrder.items?.reduce((s, i) => s + i.quantity, 0) || 0} LY NƯỚC ({new Intl.NumberFormat('vi-VN').format(myTodayOrder.total_amount)}đ)
+                        </h4>
+                        <p className="text-[11px] text-emerald-100 font-medium">
+                          {myTodayOrder.items?.some(i => i.is_gium) ? `(Gồm các món đặt cho bạn & đặt giùm đồng nghiệp)` : `(Đã lưu trên hệ thống)`}
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        if (myTodayOrder && myTodayOrder.items) {
+                          const cartFormatted = myTodayOrder.items.map(item => ({
+                            product_id: item.product_id,
+                            product_name: item.product_name_snapshot,
+                            size: item.size_snapshot,
+                            unit_price: item.unit_price_snapshot,
+                            quantity: item.quantity,
+                            sugar_option: item.sugar_option,
+                            ice_option: item.ice_option,
+                            toppings: item.toppings || [],
+                            note: item.note || '',
+                            subtotal: item.subtotal,
+                            recipientEmployee: item.recipient_id ? {
+                              id: item.recipient_id,
+                              name: item.recipient_name,
+                              department: item.recipient_department
+                            } : currentUser
+                          }));
+                          setCartItems(cartFormatted);
+                        }
+                        setUserModeView('SHOW_MENU');
+                        setIsEditingOrder(true);
+                        setIsCartOpen(true);
+                      }}
+                      className="px-4 py-2.5 bg-amber-400 hover:bg-amber-500 text-navy-950 font-black text-xs rounded-xl shadow-md transition active:scale-95 whitespace-nowrap flex-shrink-0"
+                    >
+                      ✏️ Xem & Sửa đơn
+                    </button>
+                  </div>
                 )}
 
                 {/* 3 PRIMARY CHOICE CARDS */}
@@ -576,7 +596,12 @@ function MainApp() {
                             ice_option: item.ice_option,
                             toppings: item.toppings || [],
                             note: item.note || '',
-                            subtotal: item.subtotal
+                            subtotal: item.subtotal,
+                            recipientEmployee: item.recipient_id ? {
+                              id: item.recipient_id,
+                              name: item.recipient_name,
+                              department: item.recipient_department
+                            } : currentUser
                           }));
                           setCartItems(cartFormatted);
                         }
