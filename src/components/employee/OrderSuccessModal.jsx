@@ -6,7 +6,7 @@ import { showToast } from '../common/Toast';
 export default function OrderSuccessModal({ order, isSessionClosed, onEdit, onDeleteSuccess, onClose }) {
   if (!order) return null;
 
-  const isOrderGium = order.ordered_by_name || (order.note && order.note.includes('Đặt giùm'));
+  const isHasOrderGium = order.items && order.items.some(i => i.is_gium);
 
   const handleDelete = async () => {
     if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
@@ -42,7 +42,7 @@ export default function OrderSuccessModal({ order, isSessionClosed, onEdit, onDe
           </span>
         ) : (
           <span className="px-2.5 py-1 text-xs font-extrabold bg-emerald-100 text-emerald-800 rounded-lg whitespace-nowrap flex items-center gap-1">
-            <Lock className="w-3 h-3 text-emerald-700" /> Đã khóa đơn
+            <Lock className="w-3 h-3 text-emerald-700" /> Đã mở đơn
           </span>
         )}
       </div>
@@ -50,27 +50,34 @@ export default function OrderSuccessModal({ order, isSessionClosed, onEdit, onDe
       {/* Order Item List */}
       <div className="bg-white/80 rounded-2xl p-4 border border-emerald-100/60 shadow-inner space-y-3">
         <div className="flex items-center justify-between">
-          <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400 whitespace-nowrap">ĐƠN HÔM NAY CỦA BẠN</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400 whitespace-nowrap">
+            ĐƠN HÔM NAY CỦA BẠN ({order.items?.length || 0} món)
+          </h4>
           
-          {isOrderGium && (
-            <span className="text-[11px] font-extrabold text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md flex items-center gap-1 whitespace-nowrap">
+          {isHasOrderGium && (
+            <span className="text-[10px] font-black text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md flex items-center gap-1 whitespace-nowrap border border-amber-300">
               <UserCheck className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-              <span>{order.note || `Đặt giùm bởi ${order.ordered_by_name}`}</span>
+              <span>Gồm món đặt giùm đồng nghiệp</span>
             </span>
           )}
         </div>
 
         {order.items && order.items.map((item, i) => (
-          <div key={i} className="flex items-start justify-between text-xs py-2 border-b border-slate-100 last:border-0">
+          <div key={i} className="flex items-start justify-between text-xs py-2.5 border-b border-slate-100 last:border-0">
             <div>
-              <div className="flex items-center gap-1.5 flex-wrap">
+              <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
                 <p className="font-bold text-slate-800 text-sm">
                   {item.quantity}× {item.product_name_snapshot} ({item.size_snapshot})
                 </p>
-                {item.is_gium && (
+                {item.is_gium ? (
                   <span className="text-[10px] font-black text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <UserCheck className="w-3 h-3 text-amber-700" />
-                    <span>Đặt giùm cho {item.recipient_name} ({item.recipient_department || 'VP'})</span>
+                    <UserCheck className="w-3 h-3 text-amber-700 flex-shrink-0" />
+                    <span>👥 Đặt giùm cho {item.recipient_name} ({item.recipient_department || 'VP'})</span>
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600 flex-shrink-0" />
+                    <span>👤 Món cho chính bạn</span>
                   </span>
                 )}
               </div>

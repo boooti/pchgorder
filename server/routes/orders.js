@@ -110,7 +110,7 @@ router.get('/my-today', (req, res) => {
   let employeePayAmount = 0;
 
   for (const order of orders) {
-    const isGium = order.employee_id !== empId;
+    const isGium = Number(order.employee_id) !== Number(empId);
     const items = db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(order.id);
     const parsed = items.map(item => ({
       ...item,
