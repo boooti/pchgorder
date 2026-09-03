@@ -108,7 +108,7 @@ function MainApp() {
     setSessionLoading(true);
     api.getTodaySession()
       .then(res => {
-        if (res.active) {
+        if (res.active && res.session) {
           setSessionData(res.session);
           fetchStoreProducts(res.session.store_id);
           if (currentUser) {
@@ -116,9 +116,15 @@ function MainApp() {
           }
         } else {
           setSessionData(null);
+          setMyTodayOrder(null);
+          setIsEditingOrder(false);
         }
       })
-      .catch(() => setSessionData(null))
+      .catch(() => {
+        setSessionData(null);
+        setMyTodayOrder(null);
+        setIsEditingOrder(false);
+      })
       .finally(() => setSessionLoading(false));
   };
 
@@ -802,6 +808,10 @@ function MainApp() {
         onClose={() => setIsMyCreatedOrdersOpen(false)}
         sessionId={sessionData?.id}
         onCancelSuccess={() => {
+          setSessionData(null);
+          setMyTodayOrder(null);
+          setIsEditingOrder(false);
+          setIsMyCreatedOrdersOpen(false);
           fetchTodaySession();
           setUserModeView('ENTRY');
         }}
