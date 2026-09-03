@@ -142,6 +142,21 @@ export default function CreateGroupOrderWizard({ isOpen, onClose, onSuccess }) {
       return;
     }
 
+    // Delivery time validation rule
+    if (deliveryTime) {
+      const dParts = deliveryTime.trim().split(':');
+      if (dParts.length !== 2) {
+        showToast('Giờ quán giao nước không đúng định dạng HH:MM (Ví dụ: 14:30)!', 'error');
+        return;
+      }
+      const dH = parseInt(dParts[0], 10);
+      const dM = parseInt(dParts[1], 10);
+      if (isNaN(dH) || isNaN(dM) || dH < 0 || dH > 23 || dM < 0 || dM > 59) {
+        showToast('⚠️ Giờ quán giao nước không hợp lệ! Phút phải từ 00 đến 59, giờ từ 00 đến 23 (Ví dụ 14:80 là không hợp lệ).', 'error');
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       const selectedStore = stores.find(s => s.id === selectedStoreId);

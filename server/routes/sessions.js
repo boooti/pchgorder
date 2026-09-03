@@ -83,6 +83,22 @@ router.post('/open', (req, res) => {
   const store = db.prepare('SELECT * FROM stores WHERE id = ?').get(storeId);
   if (!store) return res.status(404).json({ message: 'Không tìm thấy quán!' });
 
+  const isValidTime = (t) => {
+    if (!t || typeof t !== 'string' || !t.includes(':')) return false;
+    const parts = t.trim().split(':');
+    if (parts.length !== 2) return false;
+    const h = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    return !isNaN(h) && !isNaN(m) && h >= 0 && h <= 23 && m >= 0 && m <= 59;
+  };
+
+  if (cutoff_time && !isValidTime(cutoff_time)) {
+    return res.status(400).json({ message: 'Giờ hết nhận order không hợp lệ (Ví dụ 14:80 là không hợp lệ)! Phút phải từ 00 đến 59, giờ từ 00 đến 23.' });
+  }
+  if (delivery_time && !isValidTime(delivery_time)) {
+    return res.status(400).json({ message: 'Giờ quán giao nước không hợp lệ (Ví dụ 14:80 là không hợp lệ)! Phút phải từ 00 đến 59, giờ từ 00 đến 23.' });
+  }
+
   const todayStr = new Date().toISOString().split('T')[0];
 
   // Fetch store default delivery profile if input missing
