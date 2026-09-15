@@ -16,19 +16,21 @@ export default function Navbar({
       {/* Top Header Navbar for Desktop and Mobile */}
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-          {/* Logo & Brand */}
+          {/* Logo & Brand - PCHG Phú Cường Hoàng Gia */}
           <div
             onClick={() => setActiveView('home')}
-            className="flex items-center gap-2.5 cursor-pointer group"
+            className="flex items-center gap-3 cursor-pointer group py-1"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-700 via-blue-800 to-slate-900 text-white flex items-center justify-center shadow-md shadow-blue-900/15 group-hover:scale-105 transition-transform">
-              <Coffee className="w-5 h-5 text-blue-200" />
-            </div>
+            <img
+              src="/logo_pchg.png"
+              alt="Phú Cường Hoàng Gia"
+              className="h-11 sm:h-12 w-auto object-contain drop-shadow-sm group-hover:scale-105 transition-transform shrink-0"
+            />
             <div>
-              <span className="font-black tracking-tight text-lg text-slate-900 flex items-center gap-1.5">
-                SipDesk <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-900">Nội Bộ</span>
+              <span className="font-black tracking-tight text-lg sm:text-xl text-slate-900 flex items-center gap-1.5 leading-none">
+                PCHG <span className="text-[10px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded-md bg-red-600 text-white shadow-xs">ORDER</span>
               </span>
-              <p className="text-[10px] text-slate-500 hidden sm:block">Order nước công ty nhanh gọn</p>
+              <p className="text-[10px] font-semibold text-slate-500 hidden sm:block tracking-tight mt-1">Phú Cường Hoàng Gia</p>
             </div>
           </div>
 

@@ -44,15 +44,17 @@ export default function AdminLayout({
               {mobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-700 via-blue-800 to-slate-900 text-white flex items-center justify-center shadow-md shadow-blue-900/15">
-                <Coffee className="w-5 h-5 text-blue-200" />
-              </div>
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo_pchg.png"
+                alt="Phú Cường Hoàng Gia"
+                className="h-10 sm:h-11 w-auto object-contain drop-shadow-sm shrink-0"
+              />
               <div>
-                <span className="font-black tracking-tight text-lg text-slate-900 flex items-center gap-1.5">
-                  SipDesk <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-md bg-slate-900 text-white">Quản Trị</span>
+                <span className="font-black tracking-tight text-lg text-slate-900 flex items-center gap-1.5 leading-none">
+                  PCHG <span className="text-[10px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded-md bg-slate-900 text-white">QUẢN TRỊ</span>
                 </span>
-                <p className="text-[10px] text-slate-500 hidden sm:block">Hệ thống quản lý order nước nội bộ</p>
+                <p className="text-[10px] font-semibold text-slate-500 hidden sm:block tracking-tight mt-1">Hệ thống quản lý đặt nước PCHG</p>
               </div>
             </div>
           </div>

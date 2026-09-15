@@ -21,7 +21,9 @@ import {
   Users,
   Building,
   Sparkles,
-  ClipboardList
+  ClipboardList,
+  MapPin,
+  Calendar
 } from 'lucide-react';
 import { api } from '../api';
 import { showToast } from '../components/Toast';
@@ -264,106 +266,140 @@ export default function EmployeeHome({
         </div>
       )}
 
-      {/* 1. Today Hero Banner - Modern Navy */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-white shadow-elevated border border-blue-900/50">
+      {/* 1. Today Hero Banner - Modern Luxury PCHG Style */}
+      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white shadow-2xl border border-slate-700/60 transition-all">
         {/* Cover Background */}
-        <div className="absolute inset-0 z-0 opacity-25">
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
           <img
             src={session.store_cover || 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200'}
             alt="Store Cover"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-900/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 p-5 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-5">
-          <div className="flex items-center gap-4">
-            <img
-              src={session.store_logo || 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=150'}
-              alt={session.store_name}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-white/20 shadow-xl shrink-0"
-            />
-            <div>
-              {/* Group Title Tag if group order */}
-              {session.title && (
-                <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className="px-2.5 py-0.5 rounded-full bg-blue-500/30 border border-blue-400/40 text-blue-200 text-xs font-bold flex items-center gap-1">
-                    <Users className="w-3 h-3 text-blue-300" />
+        {/* Ambient Top Glow Line */}
+        <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent" />
+
+        {/* Content Container */}
+        <div className="relative z-10 p-5 sm:p-7 flex flex-col gap-4">
+          {/* Top Bar: Group Meta & Date / Time */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+            {/* Left: Group Title / Tag */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {session.title ? (
+                <>
+                  <span className="px-3 py-1 rounded-full bg-blue-500/25 border border-blue-400/40 text-blue-100 text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                    <Users className="w-3.5 h-3.5 text-blue-300" />
                     <span>{session.title}</span>
                   </span>
                   {session.creator_name && (
-                    <span className="text-[11px] text-blue-300/80">
-                      (Tạo bởi: {session.creator_name})
+                    <span className="text-xs text-slate-300">
+                      Tạo bởi: <strong className="text-white font-bold">{session.creator_name}</strong>
                     </span>
                   )}
                   {session.scope_type === 'DEPARTMENT' && (
-                    <span className="px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-200 text-[10px] font-semibold">
+                    <span className="px-2.5 py-0.5 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-200 text-[11px] font-bold">
                       Phòng ban
                     </span>
                   )}
                   {session.scope_type === 'CUSTOM' && (
-                    <span className="px-2 py-0.5 rounded-md bg-purple-400/20 text-purple-200 text-[10px] font-semibold">
+                    <span className="px-2.5 py-0.5 rounded-full bg-purple-400/20 border border-purple-400/30 text-purple-200 text-[11px] font-bold">
                       Nhóm riêng
                     </span>
                   )}
-                </div>
-              )}
-
-              <div className="flex items-center gap-2 text-xs font-semibold text-blue-300 uppercase tracking-wider mb-1">
-                <span>Hôm nay – {formattedToday}</span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
-                  Chốt: {session.close_time || '10:30'}
+                </>
+              ) : (
+                <span className="px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-xs font-bold flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-300" />
+                  <span>Phiên Order Toàn Công Ty</span>
                 </span>
-              </div>
-              <h1 className="text-xl sm:text-3xl font-black text-white tracking-tight">
-                {session.store_name}
-              </h1>
-              <p className="text-xs text-slate-300 mt-1 line-clamp-1">
-                {session.store_address || 'Giao về văn phòng công ty'}
-              </p>
+              )}
+            </div>
 
-              {/* Payment Mode / Sponsor Badge */}
-              <div className="mt-2.5 flex items-center gap-2 flex-wrap">
-                {session.sponsor_type === 'SPONSOR' && session.sponsor_name ? (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-amber-500/30 to-amber-600/30 border border-amber-400/50 text-amber-200 text-xs font-bold shadow-sm">
-                    <Gift className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Hôm nay <b>{session.sponsor_name}</b> bao trọn gói! (Nhân viên: 0đ)</span>
-                  </div>
-                ) : (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-800/80 border border-slate-700/80 text-slate-300 text-xs font-medium">
-                    <Users2 className="w-3.5 h-3.5 text-blue-400" />
-                    <span>Hôm nay: Tự trả tiền (Campuchia)</span>
-                  </div>
-                )}
-              </div>
+            {/* Right: Date & Cutoff Time */}
+            <div className="flex items-center gap-2 text-xs">
+              <span className="text-slate-300 flex items-center gap-1 font-medium">
+                <Calendar className="w-3.5 h-3.5 text-blue-400" />
+                <span>Hôm nay, {formattedToday}</span>
+              </span>
+              <span className="text-slate-600">•</span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-amber-400/15 border border-amber-400/30 text-amber-300 font-bold text-xs">
+                <Clock className="w-3.5 h-3.5 text-amber-400" />
+                <span>Chốt đơn: {session.close_time || '10:30'}</span>
+              </span>
             </div>
           </div>
 
-          {/* Right Action & Countdown Badge */}
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-            {/* Countdown Badge */}
-            <div
-              className={`px-3.5 py-2 rounded-2xl border backdrop-blur-md flex items-center gap-2 text-xs font-bold ${
-                isSessionClosed
-                  ? 'bg-rose-950/80 text-rose-300 border-rose-800'
-                  : 'bg-blue-500/20 text-blue-300 border-blue-400/40'
-              }`}
-            >
-              <Clock className="w-4 h-4" />
-              <span>{timeLeftText}</span>
+          {/* Main Store Info & Actions Row */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pt-1">
+            {/* Store Branding (Logo + Name + Address + Sponsor) */}
+            <div className="flex items-start sm:items-center gap-4 sm:gap-5 flex-1 min-w-0">
+              {/* Store Logo with crisp white rounded frame */}
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-white p-2 shadow-2xl border-2 border-white/20 shrink-0 flex items-center justify-center overflow-hidden group">
+                <img
+                  src={session.store_logo || 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=150'}
+                  alt={session.store_name}
+                  className="w-full h-full object-contain rounded-2xl group-hover:scale-105 transition-transform"
+                />
+              </div>
+
+              {/* Store Typography & Details */}
+              <div className="min-w-0 flex-1">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight drop-shadow-sm truncate">
+                  {session.store_name}
+                </h1>
+
+                {session.store_address && (
+                  <p className="text-xs sm:text-sm text-slate-300 flex items-center gap-1.5 mt-1 font-medium line-clamp-1">
+                    <MapPin className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                    <span>{session.store_address}</span>
+                  </p>
+                )}
+
+                {/* Payment Mode / Sponsor Badge */}
+                <div className="mt-3">
+                  {session.sponsor_type === 'SPONSOR' && session.sponsor_name ? (
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 via-amber-400/20 to-yellow-500/25 border border-amber-400/40 text-amber-200 text-xs sm:text-sm font-bold shadow-sm">
+                      <Gift className="w-4 h-4 text-amber-300 shrink-0 animate-pulse" />
+                      <span>
+                        Hôm nay <strong className="text-amber-100 underline decoration-amber-400/60 underline-offset-2">{session.sponsor_name}</strong> bao trọn gói! (Nhân viên: 0đ)
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700/80 text-slate-200 text-xs sm:text-sm font-semibold">
+                      <Users2 className="w-4 h-4 text-blue-400 shrink-0" />
+                      <span>Hôm nay: Tự trả tiền (Campuchia)</span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
-            {/* Xem Menu Gốc Button */}
-            <button
-              onClick={onOpenOriginalMenu}
-              className="px-4 py-2 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-400/40 text-white rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm active:scale-95"
-            >
-              <BookOpen className="w-4 h-4 text-blue-300" />
-              <span>Xem Menu Gốc</span>
-            </button>
+            {/* Right: Countdown & Menu Gốc Actions */}
+            <div className="flex sm:flex-row md:flex-col lg:flex-row items-stretch sm:items-center gap-2.5 shrink-0 pt-2 md:pt-0">
+              {/* Countdown Badge */}
+              <div
+                className={`px-4 py-2.5 rounded-2xl border backdrop-blur-md flex items-center justify-center gap-2 text-xs sm:text-sm font-extrabold shadow-sm ${
+                  isSessionClosed
+                    ? 'bg-rose-950/80 text-rose-300 border-rose-800/80'
+                    : 'bg-emerald-950/60 text-emerald-300 border-emerald-500/40'
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full ${isSessionClosed ? 'bg-rose-500' : 'bg-emerald-400 animate-ping'}`} />
+                <Clock className="w-4 h-4" />
+                <span>{timeLeftText}</span>
+              </div>
+
+              {/* Xem Menu Gốc Button */}
+              <button
+                onClick={onOpenOriginalMenu}
+                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs sm:text-sm font-bold shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 active:scale-95 border border-blue-400/30"
+              >
+                <BookOpen className="w-4 h-4 text-blue-200" />
+                <span>Xem Menu Gốc</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
