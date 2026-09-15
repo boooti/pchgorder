@@ -32,29 +32,36 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Top Header Navbar for Admin - Matching Navbar.jsx positioning */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-all shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
           {/* Brand Logo & Mobile Toggle */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             <button
               onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-              className="md:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+              className="md:hidden p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
               title="Danh mục Quản trị"
             >
               {mobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 sm:gap-3.5 select-none">
               <img
                 src="/logo_pchg.png"
                 alt="Phú Cường Hoàng Gia"
-                className="h-10 sm:h-11 w-auto object-contain drop-shadow-sm shrink-0"
+                className="h-12 sm:h-14 w-auto object-contain drop-shadow-md shrink-0"
               />
-              <div>
-                <span className="font-black tracking-tight text-lg text-slate-900 flex items-center gap-1.5 leading-none">
-                  PCHG <span className="text-[10px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded-md bg-slate-900 text-white">QUẢN TRỊ</span>
-                </span>
-                <p className="text-[10px] font-semibold text-slate-500 hidden sm:block tracking-tight mt-1">Hệ thống quản lý đặt nước PCHG</p>
+              <div className="flex flex-col justify-center">
+                <div className="flex items-center gap-2 leading-none">
+                  <span className="font-black tracking-tight text-xl sm:text-2xl md:text-[26px] text-slate-900">
+                    PCHG
+                  </span>
+                  <span className="text-[11px] sm:text-xs md:text-[13px] uppercase font-black tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg bg-slate-900 text-white shadow-sm">
+                    QUẢN TRỊ
+                  </span>
+                </div>
+                <p className="text-[10px] sm:text-xs font-bold text-slate-500 hidden sm:block tracking-tight mt-1">
+                  Hệ thống quản lý đặt nước PCHG
+                </p>
               </div>
             </div>
           </div>

@@ -699,31 +699,27 @@ export default function EmployeeHome({
               >
                 <div>
                   {/* Title & Status Bar */}
-                  <div className="flex items-start justify-between gap-1.5">
-                    <h4 className="font-bold text-slate-900 text-xs sm:text-sm leading-snug group-hover:text-blue-700 transition-colors line-clamp-1">
+                  <div className="flex items-start justify-between gap-1.5 min-h-[2.2rem]">
+                    <h4 
+                      className="font-bold text-slate-900 text-xs sm:text-sm leading-snug group-hover:text-blue-700 transition-colors line-clamp-2"
+                      title={prod.name}
+                    >
                       {prod.name}
                     </h4>
                     {!isAvailable && (
                       <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded-md">
-                        HẾT MÓN
+                        HẾT
                       </span>
                     )}
                   </div>
 
-                  {/* Description */}
-                  {prod.description && (
-                    <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1 leading-normal">
-                      {prod.description}
-                    </p>
-                  )}
-
                   {/* Size Preview Tags */}
                   {prod.sizes?.length > 0 && (
-                    <div className="flex items-center gap-1 mt-1.5 flex-wrap">
+                    <div className="flex items-center gap-1 mt-1 flex-wrap">
                       {prod.sizes.map((s) => (
                         <span
                           key={s.id}
-                          className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200/50"
+                          className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-50 text-slate-600 border border-slate-200/60"
                         >
                           Size {s.size_name}: <strong className="font-mono text-slate-800">{formatVND(s.price)}đ</strong>
                         </span>

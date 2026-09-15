@@ -420,7 +420,7 @@ async function updateAllMenus() {
   `, [
     hogiStoreId,
     'Hogi Coffee & Tea',
-    '/uploads/logo_hogi.svg',
+    '/uploads/logo_hogi.jpg',
     'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800',
     'L4-C27 Phan Thị Ràng, P. Rạch Giá, Kiên Giang',
     '0969 487 712',

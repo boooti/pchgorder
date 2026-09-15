@@ -108,12 +108,7 @@ export default function CustomizeItemSheet({
             <h3 className="font-black text-slate-900 text-lg sm:text-xl leading-tight">
               {product.name}
             </h3>
-            {product.description && (
-              <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
-                {product.description}
-              </p>
-            )}
-            <div className="text-blue-700 font-black text-lg mt-2 font-mono">
+            <div className="text-blue-700 font-black text-lg mt-1 font-mono">
               {formatVND(basePrice)}đ
             </div>
           </div>

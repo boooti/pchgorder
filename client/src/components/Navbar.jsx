@@ -14,23 +14,30 @@ export default function Navbar({
   return (
     <>
       {/* Top Header Navbar for Desktop and Mobile */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-all shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-3">
           {/* Logo & Brand - PCHG Phú Cường Hoàng Gia */}
           <div
             onClick={() => setActiveView('home')}
-            className="flex items-center gap-3 cursor-pointer group py-1"
+            className="flex items-center gap-3 sm:gap-3.5 cursor-pointer group py-1 select-none"
           >
             <img
               src="/logo_pchg.png"
               alt="Phú Cường Hoàng Gia"
-              className="h-11 sm:h-12 w-auto object-contain drop-shadow-sm group-hover:scale-105 transition-transform shrink-0"
+              className="h-12 sm:h-14 w-auto object-contain drop-shadow-md group-hover:scale-105 transition-transform shrink-0"
             />
-            <div>
-              <span className="font-black tracking-tight text-lg sm:text-xl text-slate-900 flex items-center gap-1.5 leading-none">
-                PCHG <span className="text-[10px] uppercase font-black tracking-wider px-1.5 py-0.5 rounded-md bg-red-600 text-white shadow-xs">ORDER</span>
-              </span>
-              <p className="text-[10px] font-semibold text-slate-500 hidden sm:block tracking-tight mt-1">Phú Cường Hoàng Gia</p>
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-2 leading-none">
+                <span className="font-black tracking-tight text-xl sm:text-2xl md:text-[26px] text-slate-900 group-hover:text-blue-900 transition-colors">
+                  PCHG
+                </span>
+                <span className="text-[11px] sm:text-xs md:text-[13px] uppercase font-black tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg bg-gradient-to-r from-red-600 via-rose-600 to-red-600 text-white shadow-sm ring-2 ring-red-500/20">
+                  ORDER
+                </span>
+              </div>
+              <p className="text-[10px] sm:text-xs font-bold text-slate-500 hidden sm:block tracking-tight mt-1">
+                Phú Cường Hoàng Gia
+              </p>
             </div>
           </div>
 
