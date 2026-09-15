@@ -754,7 +754,9 @@ async function seed() {
     }
   }
 
-  console.log('Seeded past closed session for history testing.');
+  const { updateAllMenus } = require('./seed_exact_menus');
+  await updateAllMenus();
+
   console.log('Seed completed successfully!');
 }
 
