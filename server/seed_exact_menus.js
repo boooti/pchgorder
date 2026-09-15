@@ -579,20 +579,6 @@ async function updateAllMenus() {
   };
   await insertStoreData(hogiStoreId, hogiData);
 
-  // Ensure session-today is OPEN with Ê Juice so visitors immediately see the updated menu
-  const today = new Date().toISOString().split('T')[0];
-  await run(`
-    UPDATE daily_order_sessions
-    SET store_id = 'store-ejuice',
-        title = 'Đợt Order Ê Juice (Rạch Giá)',
-        status = 'OPEN',
-        session_date = ?,
-        close_time = '23:59',
-        scope_type = 'ALL',
-        sponsor_type = 'SELF'
-    WHERE id = 'session-today'
-  `, [today]);
-
   console.log('--- HOÀN TẤT CẬP NHẬT 5 QUÁN CHÍNH XÁC 100% VỚI MENU ---');
 }
 
