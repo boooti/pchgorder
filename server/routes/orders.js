@@ -86,7 +86,6 @@ router.post('/', async (req, res) => {
 
     // 3. Compute payment: Không có công ty hỗ trợ.
     // Chỉ có "Được bao" (miễn phí hết 0đ) hoặc "Tự túc" (trả 100% tiền món).
-    const session = await get('SELECT * FROM daily_order_sessions WHERE id = ?', [session_id]);
     const isSponsored = session && session.sponsor_type === 'SPONSOR';
     let subsidyAmount = 0;
     let employeePaidAmount = calculatedTotal;
