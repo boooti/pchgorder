@@ -40,18 +40,18 @@ export default function OrderSuccessModal({
             <CheckCircle2 className="w-10 h-10" />
           </div>
           <h2 className="text-xl font-black text-slate-900 tracking-tight">
-            ĐẶT NƯỚC THÀNH CÔNG!
+            NGON LÀNH CÀNH ĐÀO! 🥳🎉
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Đơn của bạn đã được ghi nhận vào phiên hôm nay ({session?.session_date})
+            Đơn đã lên mâm! Giờ ngồi rung đùi đợi shipper giao tới cổng sau nha 🛵💨
           </p>
         </div>
 
         {/* Order Details Body */}
         <div className="p-5 overflow-y-auto flex-1 divide-y divide-slate-100 space-y-3 bg-slate-50/50">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-500 uppercase tracking-wider pb-1">
-            <span>Món đã đặt</span>
-            <span>Số tiền</span>
+            <span>Món đã quất</span>
+            <span>Thiệt hại</span>
           </div>
 
           <div className="space-y-3 pt-3">
@@ -101,19 +101,19 @@ export default function OrderSuccessModal({
             </div>
             {session?.sponsor_type === 'SPONSOR' || order.employee_paid_amount === 0 ? (
               <div className="flex justify-between text-amber-700 font-semibold bg-amber-50 p-2 rounded-xl border border-amber-200">
-                <span>🎁 {session?.sponsor_name || 'Người bao'} bao trọn gói:</span>
-                <span>Miễn phí 100% (0đ)</span>
+                <span>🎁 Đại gia {session?.sponsor_name || 'Người bao'} bao ngập mồm:</span>
+                <span>Miễn phí 100% (0đ nha 🤑)</span>
               </div>
             ) : (
               <div className="flex justify-between text-slate-600 font-medium bg-slate-50 p-2 rounded-xl">
                 <span>Hình thức:</span>
-                <span className="font-bold text-slate-800">Tự túc trả tiền</span>
+                <span className="font-bold text-slate-800">Tự lực cánh sinh (Campuchia 💸)</span>
               </div>
             )}
             <div className="flex justify-between items-baseline pt-2 border-t border-slate-200 text-sm font-bold text-slate-900">
-              <span>Bạn thanh toán:</span>
-              <span className="text-base text-emerald-700 font-mono">
-                {session?.sponsor_type === 'SPONSOR' || order.employee_paid_amount === 0 ? '0đ (Được bao)' : `${formatVND(order.employee_paid_amount || order.total_amount)}đ`}
+              <span>Hầu bao của bạn:</span>
+              <span className="text-base text-emerald-700 font-mono font-black">
+                {session?.sponsor_type === 'SPONSOR' || order.employee_paid_amount === 0 ? '0đ (Sướng nha 🤑)' : `${formatVND(order.employee_paid_amount || order.total_amount)}đ`}
               </span>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function OrderSuccessModal({
                 className="flex-1 py-3 px-4 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-2xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
               >
                 <Edit3 className="w-3.5 h-3.5" />
-                <span>Sửa đơn hàng</span>
+                <span>Sửa ly nước ✏️</span>
               </button>
               <button
                 type="button"
@@ -137,21 +137,21 @@ export default function OrderSuccessModal({
                 className="py-3 px-4 border border-red-200 hover:bg-red-50 text-red-600 rounded-2xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
               >
                 <Trash2 className="w-3.5 h-3.5" />
-                <span>Hủy đơn</span>
+                <span>Hủy đơn ❌</span>
               </button>
             </div>
           ) : (
             <div className="text-center text-xs text-slate-400 py-1">
-              Phiên đã chốt - Không thể sửa đổi đơn
+              Kèo đã khóa sổ - Không thể sửa đổi nữa nha ní
             </div>
           )}
 
           <button
             type="button"
             onClick={onClose}
-            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-bold text-sm transition-colors shadow"
+            className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-bold text-sm transition-colors shadow active:scale-[0.99]"
           >
-            Đóng lại
+            Quay lại menu múc tiếp 😋
           </button>
         </div>
       </div>

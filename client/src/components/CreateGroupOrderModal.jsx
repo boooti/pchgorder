@@ -45,8 +45,8 @@ export default function CreateGroupOrderModal({
   // Delivery Info
   const [recipientName, setRecipientName] = useState('');
   const [recipientPhone, setRecipientPhone] = useState('');
-  const [deliveryAddress, setDeliveryAddress] = useState('Văn phòng Công ty');
-  const [deliveryNotes, setDeliveryNotes] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState('Cổng sau Công ty Phú Cường Hoàng Gia - 1 Hà Huy Tập, Rạch Giá');
+  const [deliveryNotes, setDeliveryNotes] = useState('Gọi trước khi giao 5-10 phút để ra cổng sau nhận.');
 
   // Calculate default close time: current time + 45 minutes
   useEffect(() => {
@@ -60,14 +60,11 @@ export default function CreateGroupOrderModal({
       if (currentUser) {
         setRecipientName(currentUser.name || '');
         setRecipientPhone(currentUser.phone || '');
-        setTitle(`Cữ nước ${currentUser.department || 'nhóm'} - ${currentUser.name}`);
+        setTitle(`Kèo nước ${currentUser.department || 'nhóm'} - ${currentUser.name} 🧋`);
         // Default select creator in custom list
         setSelectedEmpIds([currentUser.id]);
-        if (currentUser.department) {
-          setSelectedDepts([currentUser.department]);
-        }
       } else {
-        setTitle('Nhóm order nước mới');
+        setTitle('Kèo trà sữa cứu đói chiều nay 🧋');
       }
 
       loadData();
@@ -200,13 +197,13 @@ export default function CreateGroupOrderModal({
             </div>
             <div>
               <h3 className="font-bold text-base sm:text-lg flex items-center gap-2">
-                <span>Tạo Đợt Order Nhóm Riêng</span>
-                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-blue-500/30 border border-blue-400/40 text-blue-200">
-                  Tự do
+                <span>Lập Kèo Bú Nước Nhóm Riêng 🧋🔥</span>
+                <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-emerald-500/30 border border-emerald-400/40 text-emerald-200">
+                  KÈO NGON
                 </span>
               </h3>
-              <p className="text-xs text-blue-200/80">
-                Tự chọn quán, mời đồng nghiệp và cùng chốt đơn nhanh chóng
+              <p className="text-xs text-blue-200/90">
+                Mở kèo bao cả làng hoặc rủ rê cạ cứng ghép đơn chiến deadline nè! 🚀
               </p>
             </div>
           </div>
@@ -223,20 +220,20 @@ export default function CreateGroupOrderModal({
           {/* 1. Tên đợt order & Giờ chốt */}
           <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-soft space-y-3">
             <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-blue-600" />
-              <span>1. Thông tin đợt order</span>
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>1. Đặt tên kèo & Giờ khóa sổ ⏰</span>
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="sm:col-span-2">
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Tên đợt order / nhóm <span className="text-red-500">*</span>
+                  Tên kèo order <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="VD: Cữ chiều phòng BIM, Trà sữa ăn mừng dự án..."
+                  placeholder="VD: Cữ chiều phòng BIM, Trà sữa ăn mừng sếp vui tính..."
                   required
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                 />
@@ -244,7 +241,7 @@ export default function CreateGroupOrderModal({
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Giờ chốt <span className="text-red-500">*</span>
+                  Khóa sổ lúc <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="time"
@@ -467,8 +464,8 @@ export default function CreateGroupOrderModal({
               >
                 <Users2 className="w-4 h-4 mt-0.5 text-blue-600 shrink-0" />
                 <div>
-                  <div className="text-xs">Tự trả tiền (Campuchia)</div>
-                  <div className="text-[10px] text-slate-500 font-normal">Mỗi người tự trả phần mình</div>
+                  <div className="text-xs">Tự lực cánh sinh (Campuchia chia đều) 💸</div>
+                  <div className="text-[10px] text-slate-500 font-normal">Mỗi người tự trả phần mình ăn chơi</div>
                 </div>
               </div>
 
@@ -482,8 +479,8 @@ export default function CreateGroupOrderModal({
               >
                 <Gift className="w-4 h-4 mt-0.5 text-amber-600 shrink-0" />
                 <div>
-                  <div className="text-xs">Có người bao hôm nay 🎁</div>
-                  <div className="text-[10px] text-slate-500 font-normal">Một người chi trả toàn bộ</div>
+                  <div className="text-xs">Có đại gia bao trọn gói hôm nay 🎁</div>
+                  <div className="text-[10px] text-slate-500 font-normal">Một người chi trả ngập mồm (0đ)</div>
                 </div>
               </div>
             </div>
@@ -491,7 +488,7 @@ export default function CreateGroupOrderModal({
             {sponsorType === 'SPONSOR' && (
               <div className="p-3 rounded-xl bg-amber-50/80 border border-amber-200 space-y-2 animate-in fade-in">
                 <label className="block text-[11px] font-bold text-amber-900">
-                  Ai là người bao đợt này? <span className="text-red-500">*</span>
+                  Ai là chủ chi uy tín hôm nay? <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <select
@@ -522,14 +519,14 @@ export default function CreateGroupOrderModal({
           {/* 5. Người nhận hàng & giao nhận */}
           <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-soft space-y-3">
             <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-blue-600" />
-              <span>5. Người nhận hàng (Xuất vào tin nhắn Zalo)</span>
+              <MapPin className="w-4 h-4 text-rose-600" />
+              <span>5. Nhận nước ở đâu? (Tự động vào tin nhắn Zalo gửi quán) 🛵</span>
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Tên người nhận <span className="text-red-500">*</span>
+                  Đại diện nhận hàng <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -543,7 +540,7 @@ export default function CreateGroupOrderModal({
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  SĐT người nhận <span className="text-red-500">*</span>
+                  SĐT nhận hàng <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -557,14 +554,14 @@ export default function CreateGroupOrderModal({
 
               <div className="sm:col-span-2">
                 <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Địa điểm nhận hàng cụ thể
+                  Địa điểm nhận hàng cụ thể (Mặc định công ty)
                 </label>
                 <input
                   type="text"
                   value={deliveryAddress}
                   onChange={(e) => setDeliveryAddress(e.target.value)}
-                  placeholder="VD: Phòng BIM - Tầng 8, Tòa nhà Landmark..."
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="Cổng sau Công ty Phú Cường Hoàng Gia - 1 Hà Huy Tập, Rạch Giá"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -579,12 +576,12 @@ export default function CreateGroupOrderModal({
             {submitting ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>Đang tạo đợt order nhóm...</span>
+                <span>Đang lên kèo nước...</span>
               </>
             ) : (
               <>
-                <Users className="w-4 h-4" />
-                <span>MỞ ĐỢT ORDER CHO NHÓM NGAY</span>
+                <Sparkles className="w-4 h-4" />
+                <span>MỞ KÈO NGAY & LUÔN 🚀</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}

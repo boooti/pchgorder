@@ -476,10 +476,10 @@ export default function UserIdentifyModal({ isOpen, onClose, onSelectUser, curre
                     </div>
                     <div>
                       <div className="font-black text-sm text-blue-900 group-hover:text-blue-950">
-                        Có, tôi muốn tạo mật khẩu bảo vệ
+                        Có, đặt mật khẩu kẻo đồng nghiệp đặt ké! 🔒
                       </div>
                       <div className="text-[11px] text-blue-700/80 mt-0.5">
-                        Chỉ riêng bạn mới có thể đặt nước bằng tên của mình
+                        Chỉ riêng bạn mới có thể quất nước bằng danh tính của mình
                       </div>
                     </div>
                   </div>
@@ -498,10 +498,10 @@ export default function UserIdentifyModal({ isOpen, onClose, onSelectUser, curre
                     </div>
                     <div>
                       <div className="font-bold text-sm text-slate-800">
-                        Không cần, đăng nhập không mật khẩu
+                        Thôi khỏi, tui tin tưởng anh em công ty! ✌️
                       </div>
                       <div className="text-[11px] text-slate-500 mt-0.5">
-                        Vào thẳng nhanh chóng, không cần nhớ mật khẩu
+                        Vào thẳng nhanh chóng, đỡ phải nhớ pass nhức đầu
                       </div>
                     </div>
                   </div>
@@ -509,7 +509,7 @@ export default function UserIdentifyModal({ isOpen, onClose, onSelectUser, curre
                     <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-600">
-                      Bỏ qua →
+                      Vào luôn →
                     </span>
                   )}
                 </button>
@@ -518,10 +518,9 @@ export default function UserIdentifyModal({ isOpen, onClose, onSelectUser, curre
                   <button
                     type="button"
                     onClick={() => resetViews()}
-                    className="text-xs font-semibold text-slate-500 hover:text-slate-800 py-1 px-3 rounded-lg transition-colors flex items-center gap-1 mx-auto"
+                    className="text-xs text-slate-500 hover:text-slate-700 underline"
                   >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    Chọn tên khác
+                    ← Quay lại danh sách
                   </button>
                 </div>
               </div>
@@ -543,9 +542,9 @@ export default function UserIdentifyModal({ isOpen, onClose, onSelectUser, curre
                   />
                   <div>
                     <h2 className="text-sm sm:text-base font-black tracking-tight text-white flex items-center gap-2 leading-tight">
-                      <span>Chọn Tài Khoản Của Bạn</span>
-                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-blue-500/30 text-blue-200 border border-blue-400/30">
-                        {employees.length} Nhân Sự PCHG (A - Z)
+                      <span>Xưng danh đi nè! Bạn là ai trong 47 anh hào PCHG? 😎</span>
+                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 hidden sm:inline">
+                        Làng Bú Nước 🧋
                       </span>
                     </h2>
                   </div>
@@ -569,7 +568,7 @@ export default function UserIdentifyModal({ isOpen, onClose, onSelectUser, curre
                   <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder="Tìm theo tên hoặc phòng ban..."
+                    placeholder="Gõ tên bạn tìm cho lẹ nè... 🔍"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     autoFocus

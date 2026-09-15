@@ -99,7 +99,7 @@ export default function EmployeeStats({ currentUser }) {
               <div className="w-9 h-9 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
                 <Calendar className="w-5 h-5" />
               </div>
-              <div className="text-xs text-slate-500 font-medium">Ngày đã order</div>
+              <div className="text-xs text-slate-500 font-medium">Số ngày tham chiến 📅</div>
               <div className="text-2xl font-black text-slate-900 font-mono mt-0.5">
                 {stats.days_ordered}{' '}
                 <span className="text-xs text-slate-400 font-sans font-normal">ngày</span>
@@ -111,7 +111,7 @@ export default function EmployeeStats({ currentUser }) {
               <div className="w-9 h-9 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-3">
                 <Coffee className="w-5 h-5" />
               </div>
-              <div className="text-xs text-slate-500 font-medium">Tổng số ly nước</div>
+              <div className="text-xs text-slate-500 font-medium">Tổng số ly đã bú 🧋</div>
               <div className="text-2xl font-black text-slate-900 font-mono mt-0.5">
                 {stats.total_cups}{' '}
                 <span className="text-xs text-slate-400 font-sans font-normal">ly</span>
@@ -123,7 +123,7 @@ export default function EmployeeStats({ currentUser }) {
               <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <div className="text-xs text-slate-500 font-medium">Được bao / Miễn phí</div>
+              <div className="text-xs text-slate-500 font-medium">Được bao no nê (0đ) 🤑</div>
               <div className="text-xl sm:text-2xl font-black text-emerald-600 font-mono mt-0.5">
                 {formatVND(stats.total_subsidy)}đ
               </div>
@@ -134,7 +134,7 @@ export default function EmployeeStats({ currentUser }) {
               <div className="w-9 h-9 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
                 <DollarSign className="w-5 h-5" />
               </div>
-              <div className="text-xs text-slate-500 font-medium">Bạn đã thanh toán</div>
+              <div className="text-xs text-slate-500 font-medium">Hầu bao đã cống hiến 💸</div>
               <div className="text-xl sm:text-2xl font-black text-blue-700 font-mono mt-0.5">
                 {formatVND(stats.total_paid)}đ
               </div>
@@ -149,7 +149,7 @@ export default function EmployeeStats({ currentUser }) {
               </div>
               <div>
                 <span className="text-xs font-semibold text-blue-200 uppercase tracking-wider">
-                  Món uống nhiều nhất trong tháng
+                  Món ruột nghiện nhất quả đất ⭐
                 </span>
                 <h3 className="text-lg sm:text-xl font-bold mt-0.5">
                   {stats.favorite_drink}

@@ -246,7 +246,7 @@ router.post('/', async (req, res) => {
     const dInfo = delivery_info || {};
     const recipientName = dInfo.recipient_name || defaultProfile.recipient_name || 'Văn phòng';
     const recipientPhone = dInfo.recipient_phone || defaultProfile.recipient_phone || '';
-    const deliveryAddress = dInfo.delivery_address || defaultProfile.delivery_address || '';
+    const deliveryAddress = dInfo.delivery_address || defaultProfile.delivery_address || 'Cổng sau Công ty Phú Cường Hoàng Gia - 1 Hà Huy Tập, Rạch Giá';
     const deliveryTime = dInfo.desired_delivery_time || defaultProfile.desired_delivery_time || '11:15';
     const deliveryNote = dInfo.delivery_notes || defaultProfile.delivery_notes || '';
 
@@ -338,7 +338,7 @@ router.post('/group', async (req, res) => {
     const dInfo = delivery_info || {};
     const recipientName = dInfo.recipient_name || defaultProfile.recipient_name || 'Văn phòng';
     const recipientPhone = dInfo.recipient_phone || defaultProfile.recipient_phone || '';
-    const deliveryAddress = dInfo.delivery_address || defaultProfile.delivery_address || 'Văn phòng Công ty';
+    const deliveryAddress = dInfo.delivery_address || defaultProfile.delivery_address || 'Cổng sau Công ty Phú Cường Hoàng Gia - 1 Hà Huy Tập, Rạch Giá';
     const deliveryTime = dInfo.desired_delivery_time || closeTime;
     const deliveryNote = dInfo.delivery_notes || defaultProfile.delivery_notes || '';
 

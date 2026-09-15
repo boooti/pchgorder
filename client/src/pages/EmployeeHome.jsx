@@ -140,14 +140,14 @@ export default function EmployeeHome({
   if (!session) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <div className="w-20 h-20 rounded-3xl bg-blue-100 text-blue-900 flex items-center justify-center mx-auto mb-4 shadow-sm">
-          <Store className="w-10 h-10" />
+        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600 flex items-center justify-center mx-auto mb-4 shadow-sm text-4xl">
+          🧋
         </div>
         <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-          Hôm nay chưa mở quán nào để order
+          Ủa alo? Chưa ai mở bát hôm nay hết trơn! 🥱
         </h2>
         <p className="text-sm text-slate-500 mt-2 max-w-md mx-auto leading-relaxed">
-          Quản lý chưa tạo phiên order chung hôm nay. Nhưng bạn có thể tự chọn quán và tạo ngay đợt order riêng cho nhóm hoặc phòng ban của mình!
+          Bụng đang cồn cào mà chưa thấy kèo trà sữa nào mở. Mau xưng danh lập kèo bao cả làng hoặc rủ rê anh em ghép đơn quất liền tay đi mí bồ ơi! 🤤
         </p>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <button
@@ -155,10 +155,10 @@ export default function EmployeeHome({
               if (!currentUser) onOpenUserModal();
               else if (onOpenCreateGroup) onOpenCreateGroup();
             }}
-            className="py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl text-sm font-bold shadow-lg transition-all flex items-center gap-2 active:scale-95"
+            className="py-3.5 px-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 text-white rounded-2xl text-sm font-black shadow-lg transition-all flex items-center gap-2 active:scale-95 shadow-blue-500/25"
           >
             <Users className="w-4 h-4" />
-            <span>+ Tạo Đợt Order Cho Nhóm Riêng</span>
+            <span>🔥 Mở Kèo Nước Mới Liền Tay!</span>
           </button>
         </div>
       </div>
@@ -174,10 +174,10 @@ export default function EmployeeHome({
           <Lock className="w-10 h-10" />
         </div>
         <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-          Bạn không có tên trong đợt order này
+          Ủa alo? Kèo này của hội khác nha ní ơi! 🤫
         </h2>
         <p className="text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
-          Đợt order <b>"{session.title || session.store_name}"</b> là phiên đặt món của nhóm riêng. Vì bạn không thuộc danh sách nhóm, không phải người tạo và không phải người bao nên không thể xem chi tiết menu hay đặt món.
+          Đợt order <b>"{session.title || session.store_name}"</b> là cữ nước riêng tư của nhóm khác rùi. Bạn không thuộc nhóm này nên chưa thể xem menu hay ké ly nước được.
         </p>
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           {visibleSessions.length > 0 && (
@@ -185,7 +185,7 @@ export default function EmployeeHome({
               onClick={() => onSelectSession && onSelectSession(visibleSessions[0].id)}
               className="py-3 px-6 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold shadow transition-all"
             >
-              Về đợt order của bạn ({visibleSessions[0].title || visibleSessions[0].store_name})
+              Về kèo của bạn ({visibleSessions[0].title || visibleSessions[0].store_name})
             </button>
           )}
           <button
@@ -193,10 +193,10 @@ export default function EmployeeHome({
               if (!currentUser) onOpenUserModal();
               else if (onOpenCreateGroup) onOpenCreateGroup();
             }}
-            className="py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-xs font-bold shadow transition-all flex items-center gap-2"
+            className="py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl text-xs font-bold shadow transition-all flex items-center gap-2"
           >
             <Users className="w-4 h-4" />
-            <span>+ Tạo đợt order nhóm riêng</span>
+            <span>+ Lập kèo riêng quất liền 🔥</span>
           </button>
         </div>
       </div>
@@ -412,13 +412,13 @@ export default function EmployeeHome({
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 via-amber-400/20 to-yellow-500/25 border border-amber-400/40 text-amber-200 text-xs sm:text-sm font-bold shadow-sm">
                       <Gift className="w-4 h-4 text-amber-300 shrink-0 animate-pulse" />
                       <span>
-                        Hôm nay <strong className="text-amber-100 underline decoration-amber-400/60 underline-offset-2">{session.sponsor_name}</strong> bao trọn gói! (Nhân viên: 0đ)
+                        Hôm nay đại gia <strong className="text-amber-100 underline decoration-amber-400/60 underline-offset-2">{session.sponsor_name}</strong> bao ngập mồm! (Quất tẹt ga: 0đ nha 🤑)
                       </span>
                     </div>
                   ) : (
                     <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700/80 text-slate-200 text-xs sm:text-sm font-semibold">
                       <Users2 className="w-4 h-4 text-blue-400 shrink-0" />
-                      <span>Hôm nay: Tự trả tiền (Campuchia)</span>
+                      <span>Hôm nay: Tự lực cánh sinh (Campuchia chia đều nha mấy ní 💸)</span>
                     </div>
                   )}
                 </div>
@@ -446,7 +446,7 @@ export default function EmployeeHome({
                 className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs sm:text-sm font-bold shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 active:scale-95 border border-blue-400/30"
               >
                 <BookOpen className="w-4 h-4 text-blue-200" />
-                <span>Xem Menu Gốc</span>
+                <span>Soi Menu Gốc 🔍</span>
               </button>
             </div>
           </div>
@@ -462,9 +462,9 @@ export default function EmployeeHome({
             </div>
             <div>
               <div className="text-xs font-bold text-slate-100 flex items-center gap-2">
-                <span>Bạn là Trưởng nhóm đợt order này</span>
+                <span>Bạn là Trùm Kèo đợt này 😎</span>
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400/25 border border-amber-400/40 text-amber-300 font-bold">
-                  Quản lý nhóm
+                  Chủ xị
                 </span>
               </div>
               <div className="text-[11px] text-blue-200 mt-0.5">
@@ -480,7 +480,7 @@ export default function EmployeeHome({
               title="Quản lý chi tiết danh sách đặt nước, gom món, theo dõi thanh toán và cài đặt nhóm"
             >
               <ClipboardList className="w-4 h-4 text-slate-950" />
-              <span>Quản lý Đặt Nước</span>
+              <span>Gom đơn & Quản lý 📋</span>
             </button>
 
             <button
@@ -493,7 +493,7 @@ export default function EmployeeHome({
               }`}
             >
               {isSessionClosed ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-              <span>{isSessionClosed ? 'Mở lại order' : 'Chốt đơn nhóm'}</span>
+              <span>{isSessionClosed ? 'Mở lại order 🚀' : 'Khóa sổ chốt đơn 🔒'}</span>
             </button>
 
             <button
@@ -503,7 +503,7 @@ export default function EmployeeHome({
               title="Copy danh sách nhắc nhở các thành viên trong nhóm chưa đặt"
             >
               <Copy className="w-3.5 h-3.5 text-blue-200" />
-              <span>{copyingReminder ? 'Đã copy!' : 'Nhắc nhở nhóm'}</span>
+              <span>{copyingReminder ? 'Đã copy rồi!' : 'Hối mấy ní chưa đặt 📣'}</span>
             </button>
 
             <button
@@ -511,7 +511,7 @@ export default function EmployeeHome({
               className="px-3.5 py-2 bg-blue-500 hover:bg-blue-400 text-white rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-md active:scale-95"
             >
               <MessageSquare className="w-3.5 h-3.5" />
-              <span>Xuất Zalo gửi quán</span>
+              <span>Bắn đơn qua Zalo 🛵</span>
             </button>
           </div>
         </div>
@@ -553,12 +553,12 @@ export default function EmployeeHome({
         <div className="bg-blue-50/70 border border-blue-200/80 rounded-3xl p-4 sm:p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Flame className="w-4 h-4 text-blue-600" />
+              <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
               <h3 className="font-bold text-slate-900 text-sm sm:text-base">
-                Món bạn hay uống & Gần đây
+                Gu ruột của bạn nè 😋
               </h3>
             </div>
-            <span className="text-[11px] text-blue-800 font-medium">Đặt lại 1 chạm</span>
+            <span className="text-[11px] text-blue-800 font-semibold">1 chạm là xong nè 🔥</span>
           </div>
 
           <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
@@ -600,10 +600,10 @@ export default function EmployeeHome({
                         disabled={isSessionClosed}
                         className="py-1 px-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-all shadow-sm active:scale-95"
                       >
-                        Order lại
+                        Múc lại ngay 🧋
                       </button>
                     ) : (
-                      <span className="text-[10px] font-bold text-slate-400">Hết món</span>
+                      <span className="text-[10px] font-bold text-slate-400">Hết sạch rùi 🥲</span>
                     )}
                   </div>
                 </div>
@@ -620,7 +620,7 @@ export default function EmployeeHome({
           <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Tìm món theo tên, hương vị, nguyên liệu..."
+            placeholder="Tìm món giải khát, trà sữa, cafe, đá xay nè... 🔍"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl text-sm border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 shadow-sm transition-all placeholder-slate-400"
@@ -645,7 +645,7 @@ export default function EmployeeHome({
                 : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
             }`}
           >
-            Tất cả ({products.length})
+            Tất cả món 🧋 ({products.length})
           </button>
           {session.categories?.map((cat) => {
             const count = products.filter((p) => p.category_id === cat.id).length;
@@ -674,8 +674,8 @@ export default function EmployeeHome({
       {filteredProducts.length === 0 ? (
         <div className="py-16 text-center text-slate-400 bg-white rounded-3xl border border-slate-200 p-8">
           <Search className="w-10 h-10 mx-auto mb-2 opacity-30" />
-          <p className="text-sm font-semibold">Không tìm thấy món nào phù hợp</p>
-          <p className="text-xs mt-1 text-slate-400">Thử tìm bằng từ khóa khác hoặc chuyển danh mục</p>
+          <p className="text-sm font-semibold">Ủa tìm hổng ra món này luôn á! 🤪</p>
+          <p className="text-xs mt-1 text-slate-400">Thử gõ từ khóa khác hoặc lướt chọn danh mục bên trên nha ní</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5">
@@ -708,7 +708,7 @@ export default function EmployeeHome({
                     </h4>
                     {!isAvailable && (
                       <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded-md">
-                        HẾT
+                        HẾT SẠCH 🥲
                       </span>
                     )}
                   </div>
@@ -738,7 +738,7 @@ export default function EmployeeHome({
                           {formatVND(lowestPrice)}đ
                         </span>
                         <span className="text-[9px] text-amber-700 bg-amber-50 border border-amber-200 px-1 py-0.2 rounded font-sans font-semibold">
-                          Được bao
+                          Được bao 0đ 🤑
                         </span>
                       </div>
                     ) : (
@@ -768,11 +768,11 @@ export default function EmployeeHome({
                       className="py-1 px-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-lg text-[11px] font-bold transition-all flex items-center gap-0.5 active:scale-95 shadow-2xs shrink-0"
                     >
                       <Plus className="w-3 h-3 stroke-[2.5]" />
-                      <span>Chọn món</span>
+                      <span>Múc món 🧋</span>
                     </button>
                   ) : (
                     <span className="text-[10px] font-bold text-slate-400 px-1.5 py-0.5 bg-slate-100 rounded-md">
-                      Tạm hết
+                      Tạm hết 🥲
                     </span>
                   )}
                 </div>

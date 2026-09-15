@@ -155,7 +155,7 @@ export default function ZaloMessageModal({ isOpen, onClose, sessionId }) {
         {/* Action Bottom Bar */}
         <div className="p-4 bg-white border-t border-slate-100 flex items-center justify-between gap-3 shrink-0">
           <div className="text-xs text-slate-500 hidden sm:block">
-            * Mẹo: Nhấn nút Copy và dán thẳng vào hội thoại với quán trên Zalo.
+            * Mẹo: Bấm Copy xong qua Zalo dán cái bụp là quán nhận đơn liền tay!
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
@@ -175,12 +175,12 @@ export default function ZaloMessageModal({ isOpen, onClose, sessionId }) {
               {copied ? (
                 <>
                   <Check className="w-4 h-4 stroke-[3]" />
-                  <span>ĐÃ COPY TIN NHẮN!</span>
+                  <span>ĐÃ COPY XONG! DÁN VÔ ZALO LẸ 🚀</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-4 h-4" />
-                  <span>COPY TIN NHẮN</span>
+                  <span>BẮN QUA ZALO (COPY) 🛵</span>
                 </>
               )}
             </button>

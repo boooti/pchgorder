@@ -48,16 +48,16 @@ export default function FloatingCart({
               </span>
             </div>
             <div>
-              <div className="text-xs text-slate-300 font-medium">Giỏ hàng của bạn</div>
+              <div className="text-xs text-slate-300 font-medium">Giỏ hàng mlem mlem 🧋</div>
               <div className="text-base font-bold text-blue-300 font-mono">
                 {formatVND(employeePay)}đ
                 {isSponsored ? (
-                  <span className="text-xs text-amber-300 ml-2 font-normal font-sans">
-                    (Được bao: 0đ)
+                  <span className="text-xs text-amber-300 ml-2 font-semibold font-sans">
+                    (Được bao: 0đ 🤑)
                   </span>
                 ) : (
                   <span className="text-xs text-slate-400 ml-2 font-normal font-sans">
-                    (Tự túc)
+                    (Campuchia 💸)
                   </span>
                 )}
               </div>
@@ -66,9 +66,9 @@ export default function FloatingCart({
 
           <button
             onClick={() => setIsOpen(true)}
-            className="py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold text-xs uppercase tracking-wide transition-colors flex items-center gap-1.5 shrink-0 shadow"
+            className="py-2.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl font-black text-xs uppercase tracking-wide transition-all flex items-center gap-1.5 shrink-0 shadow active:scale-95"
           >
-            <span>Xem giỏ</span>
+            <span>Chốt đơn 🚀</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -86,9 +86,9 @@ export default function FloatingCart({
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-900 text-base sm:text-lg">
-                    Giỏ hàng của bạn ({totalCups} ly)
+                    Giỏ hàng no nê ({totalCups} ly) 🧋
                   </h3>
-                  <p className="text-xs text-slate-500">Kiểm tra lại món trước khi gửi đơn</p>
+                  <p className="text-xs text-slate-500">Soi lại topping, đường đá trước khi bắn đơn nhen!</p>
                 </div>
               </div>
               <button
@@ -189,19 +189,19 @@ export default function FloatingCart({
               {isSponsored ? (
                 <div className="flex justify-between text-xs text-amber-800 font-bold bg-amber-50 p-2.5 rounded-xl border border-amber-200">
                   <span className="flex items-center gap-1.5">
-                    <span>🎁 {sponsorName} bao trọn gói:</span>
+                    <span>🎁 Đại gia {sponsorName} bao ngập mồm:</span>
                   </span>
-                  <span className="font-mono">Miễn phí 100% (0đ)</span>
+                  <span className="font-mono">Miễn phí 100% (0đ nha 🤑)</span>
                 </div>
               ) : (
                 <div className="flex justify-between text-xs text-slate-600 font-medium bg-slate-100 p-2.5 rounded-xl">
                   <span>Hình thức thanh toán:</span>
-                  <span className="font-bold text-slate-800">Tự túc trả tiền</span>
+                  <span className="font-bold text-slate-800">Tự lực cánh sinh (Campuchia 💸)</span>
                 </div>
               )}
 
               <div className="flex justify-between items-baseline pt-2 border-t border-slate-200">
-                <span className="text-sm font-bold text-slate-900">Số tiền bạn thanh toán:</span>
+                <span className="text-sm font-bold text-slate-900">Hầu bao của bạn:</span>
                 <span className="text-lg font-black text-emerald-600 font-mono">
                   {formatVND(employeePay)}đ
                 </span>
@@ -217,17 +217,17 @@ export default function FloatingCart({
                 {isSubmitting ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Đang lưu đơn hàng...</span>
+                    <span>Đang bắn đơn lên hệ thống... 🚀</span>
                   </>
                 ) : isSessionClosed ? (
-                  <span>ORDER ĐÃ ĐÓNG (Không thể đặt)</span>
+                  <span>KÈO ĐÃ KHÓA SỔ RÙI 🔒 (Không thể đặt)</span>
                 ) : (
                   <>
                     <ShoppingBag className="w-5 h-5" />
                     <span>
                       {isSponsored
-                        ? `XÁC NHẬN ĐẶT NƯỚC (0đ - ${sponsorName} bao)`
-                        : `XÁC NHẬN ĐẶT NƯỚC (${formatVND(employeePay)}đ)`}
+                        ? `CHỐT ĐƠN LIỀN TAY (0đ - ${sponsorName} bao) 🥳`
+                        : `CHỐT ĐƠN LIỀN TAY (${formatVND(employeePay)}đ) 🛵💨`}
                     </span>
                   </>
                 )}

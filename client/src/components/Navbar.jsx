@@ -36,7 +36,7 @@ export default function Navbar({
                 </span>
               </div>
               <p className="text-[10px] sm:text-xs font-bold text-slate-500 hidden sm:block tracking-tight mt-1">
-                Phú Cường Hoàng Gia
+                Phú Cường Hoàng Gia • Biệt đội săn trà sữa 🧋
               </p>
             </div>
           </div>
@@ -52,7 +52,7 @@ export default function Navbar({
               }`}
             >
               <Home className="w-4 h-4" />
-              <span>Trang chủ</span>
+              <span>Ghé Menu 🍵</span>
             </button>
             <button
               onClick={() => setActiveView('my-order')}
@@ -63,7 +63,7 @@ export default function Navbar({
               }`}
             >
               <ShoppingCart className="w-4 h-4" />
-              <span>Đơn hôm nay</span>
+              <span>Kèo hôm nay 🥤</span>
               {todayOrderCount > 0 && (
                 <span className="w-2 h-2 rounded-full bg-blue-600 inline-block" />
               )}
@@ -77,7 +77,7 @@ export default function Navbar({
               }`}
             >
               <History className="w-4 h-4" />
-              <span>Thống kê cá nhân</span>
+              <span>Sổ nợ trà sữa 📊</span>
             </button>
           </nav>
 
@@ -103,16 +103,16 @@ export default function Navbar({
                 </div>
                 <div className="px-2 py-0.5 rounded-lg bg-blue-600 text-white text-[10px] font-bold flex items-center gap-1 ml-1 group-hover:bg-blue-700 transition-colors shrink-0">
                   <RefreshCw className="w-2.5 h-2.5" />
-                  <span className="hidden md:inline">Đổi</span>
+                  <span className="hidden md:inline">Đổi bạn</span>
                 </div>
               </button>
             ) : (
               <button
                 onClick={onOpenUserModal}
-                className="py-2 px-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-2xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95"
+                className="py-2 px-3.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black rounded-2xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95 animate-pulse"
               >
                 <User className="w-3.5 h-3.5" />
-                <span>Bạn là ai?</span>
+                <span>Xưng danh ngay 😎</span>
               </button>
             )}
 
@@ -123,8 +123,8 @@ export default function Navbar({
               title="Tự tạo đợt order riêng cho nhóm hoặc phòng ban"
             >
               <Users className="w-3.5 h-3.5 text-blue-200" />
-              <span className="hidden sm:inline">+ Tạo Nhóm Order</span>
-              <span className="sm:hidden">+ Nhóm</span>
+              <span className="hidden sm:inline">+ Mở kèo mới 🔥</span>
+              <span className="sm:hidden">+ Kèo 🔥</span>
             </button>
 
             {/* Admin Switcher - Always require password */}
@@ -152,7 +152,7 @@ export default function Navbar({
           }`}
         >
           <Home className="w-5 h-5" />
-          <span className="text-[10px]">Trang chủ</span>
+          <span className="text-[10px]">Menu 🍵</span>
         </button>
 
         <button
@@ -162,7 +162,7 @@ export default function Navbar({
           }`}
         >
           <ShoppingCart className="w-5 h-5" />
-          <span className="text-[10px]">Đơn của tôi</span>
+          <span className="text-[10px]">Kèo hôm nay 🥤</span>
           {todayOrderCount > 0 && (
             <span className="absolute top-1 right-2 w-2 h-2 rounded-full bg-blue-600" />
           )}
@@ -175,7 +175,7 @@ export default function Navbar({
           }`}
         >
           <History className="w-5 h-5" />
-          <span className="text-[10px]">Lịch sử</span>
+          <span className="text-[10px]">Sổ nợ 📊</span>
         </button>
 
         <button
@@ -185,7 +185,7 @@ export default function Navbar({
           }`}
         >
           <Shield className="w-5 h-5" />
-          <span className="text-[10px]">Admin</span>
+          <span className="text-[10px]">Quản trị</span>
         </button>
       </div>
     </>

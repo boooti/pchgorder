@@ -91,9 +91,9 @@ export default function MyOrders({ currentUser, session, onNavigateHome, onOpenU
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Đơn hàng của bạn</h1>
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Kèo Nước Của Bạn Hôm Nay 🥤</h1>
           <p className="text-xs text-slate-500 mt-0.5">
-            Xem lại món đã chọn và trạng thái chốt đơn hôm nay
+            Kiểm tra lại xem đã quất món nào rồi, kẻo quên nhen!
           </p>
         </div>
         <button
@@ -101,34 +101,34 @@ export default function MyOrders({ currentUser, session, onNavigateHome, onOpenU
           className="py-2 px-3.5 rounded-2xl bg-white border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-1.5 shadow-sm"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Về menu</span>
+          <span>Về Menu 🍵</span>
         </button>
       </div>
 
       {loading ? (
         <div className="py-16 text-center text-slate-400">
           <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-          Đang kiểm tra đơn của bạn...
+          Đang kiểm tra kèo nước của bạn...
         </div>
       ) : !order ? (
         <div className="bg-white rounded-3xl p-8 border border-slate-200 text-center shadow-soft space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center mx-auto shadow-inner">
-            <ShoppingCart className="w-8 h-8 opacity-80" />
+          <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto shadow-inner text-3xl">
+            🧋
           </div>
           <div>
-            <h3 className="font-bold text-slate-800 text-base">Hôm nay bạn chưa đặt món nào!</h3>
+            <h3 className="font-bold text-slate-800 text-base">Hôm nay chưa quất ly nào hết trơn! 🥱</h3>
             <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-              Phiên order tại <b>{session?.store_name || 'quán'}</b> đang mở. Hãy chọn món yêu thích của bạn ngay nhé!
+              Kèo order tại <b>{session?.store_name || 'quán'}</b> đang mở rôm rả nè. Mau ghé menu múc ngay một ly nạp năng lượng chiến deadline đi bồ tèo ơi! 🤤
             </p>
           </div>
 
           <button
             onClick={onNavigateHome}
             disabled={!isSessionOpen}
-            className="py-3 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 text-white rounded-2xl text-xs font-bold shadow-md transition-all inline-flex items-center gap-2"
+            className="py-3 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:bg-slate-400 text-white rounded-2xl text-xs font-black shadow-md transition-all inline-flex items-center gap-2 active:scale-95"
           >
             <Plus className="w-4 h-4" />
-            <span>ĐẶT NƯỚC NGAY</span>
+            <span>MÚC NƯỚC NGAY & LUÔN 🧋</span>
           </button>
         </div>
       ) : (

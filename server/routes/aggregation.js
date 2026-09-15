@@ -173,7 +173,7 @@ Ghi chú: {DELIVERY_NOTE}`;
     const finalMessage = rendered
       .replace(/{RECIPIENT_NAME}/g, session.recipient_name_snapshot || 'Văn phòng')
       .replace(/{RECIPIENT_PHONE}/g, session.recipient_phone_snapshot || '')
-      .replace(/{DELIVERY_ADDRESS}/g, session.delivery_address_snapshot || '')
+      .replace(/{DELIVERY_ADDRESS}/g, session.delivery_address_snapshot || 'Cổng sau Công ty Phú Cường Hoàng Gia - 1 Hà Huy Tập, Rạch Giá')
       .replace(/{DELIVERY_TIME}/g, session.delivery_time_snapshot || '11:15')
       .replace(/{DELIVERY_NOTE}/g, session.delivery_note_snapshot || 'Gọi trước khi giao.');
 
@@ -183,17 +183,17 @@ Ghi chú: {DELIVERY_NOTE}`;
         session_id: sessionId,
         store_name: session.store_name,
         date: session.session_date,
-        format_mode: formatMode,
         total_cups: totalCups,
         total_amount: totalAmount,
         total_amount_formatted: formatVND(totalAmount) + 'đ',
         message: finalMessage,
+        raw_message: finalMessage,
         delivery_info: {
-          recipient: session.recipient_name_snapshot,
+          recipient: session.recipient_name_snapshot || 'Văn phòng',
           phone: session.recipient_phone_snapshot,
-          address: session.delivery_address_snapshot,
+          address: session.delivery_address_snapshot || 'Cổng sau Công ty Phú Cường Hoàng Gia - 1 Hà Huy Tập, Rạch Giá',
           time: session.delivery_time_snapshot,
-          notes: session.delivery_note_snapshot
+          note: session.delivery_note_snapshot
         }
       }
     });
