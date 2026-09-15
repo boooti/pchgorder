@@ -206,21 +206,21 @@ export default function MyOrders({ currentUser, session, onNavigateHome, onOpenU
               <span>Tổng tiền món:</span>
               <span className="font-semibold text-slate-800">{formatVND(order.total_amount)}đ</span>
             </div>
-            {session?.sponsor_type === 'SPONSOR' ? (
+            {session?.sponsor_type === 'SPONSOR' || order.employee_paid_amount === 0 ? (
               <div className="flex justify-between text-amber-800 font-semibold bg-amber-50 p-2 rounded-xl border border-amber-200">
-                <span>🎁 {session.sponsor_name || 'Người bao'} bao trọn gói:</span>
-                <span>-{formatVND(order.total_amount)}đ</span>
+                <span>🎁 {session?.sponsor_name || 'Người bao'} bao trọn gói:</span>
+                <span>Miễn phí 100% (0đ)</span>
               </div>
-            ) : order.subsidy_amount > 0 ? (
-              <div className="flex justify-between text-emerald-700 font-medium">
-                <span>Công ty hỗ trợ:</span>
-                <span>-{formatVND(order.subsidy_amount)}đ</span>
+            ) : (
+              <div className="flex justify-between text-slate-600 font-medium bg-slate-50 p-2 rounded-xl">
+                <span>Hình thức:</span>
+                <span className="font-bold text-slate-800">Tự túc trả tiền</span>
               </div>
-            ) : null}
+            )}
             <div className="flex justify-between items-baseline pt-2 border-t border-slate-200 text-sm font-bold text-slate-900">
               <span>Bạn thanh toán:</span>
               <span className="text-lg text-emerald-700 font-mono font-bold">
-                {session?.sponsor_type === 'SPONSOR' ? '0đ (Được bao)' : `${formatVND(order.employee_paid_amount)}đ`}
+                {session?.sponsor_type === 'SPONSOR' || order.employee_paid_amount === 0 ? '0đ (Được bao)' : `${formatVND(order.employee_paid_amount || order.total_amount)}đ`}
               </span>
             </div>
           </div>

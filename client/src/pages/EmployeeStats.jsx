@@ -118,12 +118,12 @@ export default function EmployeeStats({ currentUser }) {
               </div>
             </div>
 
-            {/* Subsidy */}
+            {/* Được bao / Miễn phí */}
             <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-soft">
               <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <div className="text-xs text-slate-500 font-medium">Công ty hỗ trợ</div>
+              <div className="text-xs text-slate-500 font-medium">Được bao / Miễn phí</div>
               <div className="text-xl sm:text-2xl font-black text-emerald-600 font-mono mt-0.5">
                 {formatVND(stats.total_subsidy)}đ
               </div>

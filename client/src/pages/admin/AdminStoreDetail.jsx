@@ -38,6 +38,19 @@ export default function AdminStoreDetail({ storeId, onBack }) {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
+  // Store Edit Modal State
+  const [isEditStoreOpen, setIsEditStoreOpen] = useState(false);
+  const [storeEditData, setStoreEditData] = useState({
+    name: '',
+    phone: '',
+    address: '',
+    notes: '',
+    logo: '',
+    cover_image: '',
+    is_active: 1,
+  });
+  const [savingStoreInfo, setSavingStoreInfo] = useState(false);
+
   // Form State for Products
   const [productForm, setProductForm] = useState({
     name: '',
@@ -126,6 +139,41 @@ export default function AdminStoreDetail({ storeId, onBack }) {
       ]
     });
     setIsProductModalOpen(true);
+  };
+
+  const handleOpenEditStore = () => {
+    if (!store) return;
+    setStoreEditData({
+      name: store.name || '',
+      phone: store.phone || '',
+      address: store.address || '',
+      notes: store.notes || '',
+      logo: store.logo || '',
+      cover_image: store.cover_image || '',
+      is_active: store.is_active !== undefined ? store.is_active : 1,
+    });
+    setIsEditStoreOpen(true);
+  };
+
+  const handleSaveStoreInfo = async (e) => {
+    e.preventDefault();
+    if (!storeEditData.name.trim()) {
+      showToast('Tên quán là bắt buộc', 'error');
+      return;
+    }
+    try {
+      setSavingStoreInfo(true);
+      const res = await api.updateStore(storeId, storeEditData);
+      if (res.success) {
+        showToast('Cập nhật thông tin quán thành công', 'success');
+        setIsEditStoreOpen(false);
+        loadStoreDetails();
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      setSavingStoreInfo(false);
+    }
   };
 
   const handleOpenEditProduct = (prod) => {
@@ -391,28 +439,39 @@ export default function AdminStoreDetail({ storeId, onBack }) {
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-20">
       {/* Top Header */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={onBack}
-          className="p-2.5 rounded-2xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 shadow-sm transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-              {store.name}
-            </h1>
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-              store.is_active === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
-            }`}>
-              {store.is_active === 1 ? 'Đang hoạt động' : 'Tạm ngưng'}
-            </span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-slate-200/80 shadow-xs">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onBack}
+            className="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 shadow-xs transition-colors shrink-0"
+            title="Quay lại danh sách quán"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                {store.name}
+              </h1>
+              <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                store.is_active === 1 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+              }`}>
+                {store.is_active === 1 ? 'Đang hoạt động' : 'Tạm ngưng'}
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {store.address || 'Chưa cập nhật địa chỉ'} • Hotline: {store.phone || 'Chưa cấu hình'}
+            </p>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            {store.address} • Hotline: {store.phone || 'Chưa cấu hình'}
-          </p>
         </div>
+
+        <button
+          onClick={handleOpenEditStore}
+          className="py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 self-start sm:self-auto active:scale-95 shrink-0"
+        >
+          <Edit3 className="w-3.5 h-3.5" />
+          <span>Sửa Thông Tin Quán</span>
+        </button>
       </div>
 
       {/* Tabs Navigation */}
@@ -1183,6 +1242,128 @@ export default function AdminStoreDetail({ storeId, onBack }) {
                   className="py-2.5 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow"
                 >
                   Lưu món
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Store Modal */}
+      {isEditStoreOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <div className="flex items-center gap-2">
+                <Edit3 className="w-5 h-5 text-blue-600" />
+                <h3 className="font-bold text-slate-900 text-base">Sửa thông tin quán</h3>
+              </div>
+              <button
+                onClick={() => setIsEditStoreOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveStoreInfo} className="p-5 space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  Tên quán <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Tên quán..."
+                  value={storeEditData.name}
+                  onChange={(e) => setStoreEditData({ ...storeEditData, name: e.target.value })}
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">Số điện thoại hotline</label>
+                  <input
+                    type="text"
+                    placeholder="09..."
+                    value={storeEditData.phone}
+                    onChange={(e) => setStoreEditData({ ...storeEditData, phone: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">Trạng thái</label>
+                  <select
+                    value={storeEditData.is_active}
+                    onChange={(e) => setStoreEditData({ ...storeEditData, is_active: parseInt(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  >
+                    <option value={1}>Đang hoạt động</option>
+                    <option value={0}>Tạm ngưng</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-600 mb-1">Địa chỉ quán</label>
+                <input
+                  type="text"
+                  placeholder="Địa chỉ số nhà, đường, thành phố..."
+                  value={storeEditData.address}
+                  onChange={(e) => setStoreEditData({ ...storeEditData, address: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">URL Logo quán</label>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={storeEditData.logo}
+                    onChange={(e) => setStoreEditData({ ...storeEditData, logo: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">URL Ảnh bìa</label>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={storeEditData.cover_image}
+                    onChange={(e) => setStoreEditData({ ...storeEditData, cover_image: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-600 mb-1">Ghi chú về quán</label>
+                <textarea
+                  rows={2}
+                  placeholder="Ghi chú thêm..."
+                  value={storeEditData.notes}
+                  onChange={(e) => setStoreEditData({ ...storeEditData, notes: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsEditStoreOpen(false)}
+                  className="py-2.5 px-4 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl font-bold"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingStoreInfo}
+                  className="py-2.5 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md transition-all flex items-center gap-1.5"
+                >
+                  {savingStoreInfo ? 'Đang lưu...' : 'Lưu Thay Đổi'}
                 </button>
               </div>
             </form>

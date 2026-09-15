@@ -194,8 +194,7 @@ export default function App() {
   const handleExitAdmin = () => {
     setIsAdmin(false);
     sessionStorage.removeItem('admin_authenticated');
-    setActiveView('home');
-    showToast('Đã thoát phiên Quản trị viên', 'info');
+    window.location.href = '/';
   };
 
   // Safety guard: require authenticated PIN to view admin

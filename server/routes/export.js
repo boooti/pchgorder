@@ -71,8 +71,8 @@ router.get('/excel', async (req, res) => {
         'Số lượng': r.quantity,
         'Đơn giá (đ)': r.unit_price_snapshot,
         'Thành tiền (đ)': lineTotal,
-        'Công ty hỗ trợ (đ)': r.subsidy_amount || 0,
-        'Nhân viên trả (đ)': r.employee_paid_amount || 0
+        'Được bao / Miễn phí (đ)': r.subsidy_amount || 0,
+        'Tự túc trả (đ)': r.employee_paid_amount || 0
       };
     });
 

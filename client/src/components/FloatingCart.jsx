@@ -25,8 +25,7 @@ export default function FloatingCart({
 
   const totalCups = cartItems.reduce((sum, it) => sum + (it.quantity || 1), 0);
   const totalAmount = cartItems.reduce((sum, it) => sum + (it.total_price || 0), 0);
-  const applicableSubsidy = isSponsored ? 0 : Math.min(totalAmount, subsidyAmount);
-  const employeePay = isSponsored ? 0 : Math.max(0, totalAmount - applicableSubsidy);
+  const employeePay = isSponsored ? 0 : totalAmount;
 
   const handleOrder = () => {
     if (isSubmitting || isSessionClosed) return;
@@ -54,13 +53,13 @@ export default function FloatingCart({
                 {formatVND(employeePay)}đ
                 {isSponsored ? (
                   <span className="text-xs text-amber-300 ml-2 font-normal font-sans">
-                    ({sponsorName} bao trọn)
+                    (Được bao: 0đ)
                   </span>
-                ) : applicableSubsidy > 0 ? (
-                  <span className="text-xs line-through text-slate-400 ml-2 font-normal font-sans">
-                    {formatVND(totalAmount)}đ
+                ) : (
+                  <span className="text-xs text-slate-400 ml-2 font-normal font-sans">
+                    (Tự túc)
                   </span>
-                ) : null}
+                )}
               </div>
             </div>
           </div>
@@ -192,17 +191,14 @@ export default function FloatingCart({
                   <span className="flex items-center gap-1.5">
                     <span>🎁 {sponsorName} bao trọn gói:</span>
                   </span>
-                  <span className="font-mono">-{formatVND(totalAmount)}đ</span>
+                  <span className="font-mono">Miễn phí 100% (0đ)</span>
                 </div>
-              ) : subsidyAmount > 0 ? (
-                <div className="flex justify-between text-xs text-emerald-600 font-medium">
-                  <span className="flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>Công ty trợ cấp:</span>
-                  </span>
-                  <span className="font-mono">-{formatVND(applicableSubsidy)}đ</span>
+              ) : (
+                <div className="flex justify-between text-xs text-slate-600 font-medium bg-slate-100 p-2.5 rounded-xl">
+                  <span>Hình thức thanh toán:</span>
+                  <span className="font-bold text-slate-800">Tự túc trả tiền</span>
                 </div>
-              ) : null}
+              )}
 
               <div className="flex justify-between items-baseline pt-2 border-t border-slate-200">
                 <span className="text-sm font-bold text-slate-900">Số tiền bạn thanh toán:</span>

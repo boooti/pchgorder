@@ -8,9 +8,21 @@ export default function AdminStores({ onSelectStore }) {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingStore, setEditingStore] = useState(null);
 
-  // Form State
+  // Form State for Create
   const [formData, setFormData] = useState({
+    name: '',
+    logo: '',
+    cover_image: '',
+    address: '',
+    phone: '',
+    notes: '',
+    is_active: 1,
+  });
+
+  // Form State for Edit
+  const [editFormData, setEditFormData] = useState({
     name: '',
     logo: '',
     cover_image: '',
@@ -61,6 +73,40 @@ export default function AdminStores({ onSelectStore }) {
           notes: '',
           is_active: 1,
         });
+        loadStores();
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleOpenEdit = (st) => {
+    setEditingStore(st);
+    setEditFormData({
+      name: st.name || '',
+      logo: st.logo || '',
+      cover_image: st.cover_image || '',
+      address: st.address || '',
+      phone: st.phone || '',
+      notes: st.notes || '',
+      is_active: st.is_active !== undefined ? st.is_active : 1,
+    });
+  };
+
+  const handleUpdateStore = async (e) => {
+    e.preventDefault();
+    if (!editFormData.name.trim()) {
+      showToast('Tên quán là bắt buộc!', 'error');
+      return;
+    }
+    try {
+      setSubmitting(true);
+      const res = await api.updateStore(editingStore.id, editFormData);
+      if (res.success) {
+        showToast('Cập nhật thông tin quán thành công!', 'success');
+        setEditingStore(null);
         loadStores();
       }
     } catch (err) {
@@ -196,20 +242,29 @@ export default function AdminStores({ onSelectStore }) {
               </div>
 
               {/* Action Buttons */}
-              <div className="p-4 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-2">
+              <div className="p-3.5 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-2">
                 <button
                   onClick={() => handleDeleteStore(st.id, st.name)}
-                  className="p-2 text-slate-400 hover:text-red-600 rounded-xl hover:bg-slate-200/50 transition-colors"
+                  className="p-2 text-slate-400 hover:text-red-600 rounded-xl hover:bg-red-50 transition-colors"
                   title="Xóa quán"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
 
                 <button
+                  onClick={() => handleOpenEdit(st)}
+                  className="py-2 px-3 bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5"
+                  title="Sửa thông tin quán"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                  <span>Sửa thông tin</span>
+                </button>
+
+                <button
                   onClick={() => onSelectStore(st.id)}
                   className="flex-1 py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1.5"
                 >
-                  <span>Quản lý Menu & Quán</span>
+                  <span>Menu & Món</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -330,6 +385,128 @@ export default function AdminStores({ onSelectStore }) {
                   className="py-2.5 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md transition-all"
                 >
                   {submitting ? 'Đang tạo...' : 'Lưu Quán'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Sửa Thông Tin Quán */}
+      {editingStore && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <div className="flex items-center gap-2">
+                <Edit3 className="w-5 h-5 text-blue-600" />
+                <h3 className="font-bold text-slate-900 text-base">Sửa thông tin quán</h3>
+              </div>
+              <button
+                onClick={() => setEditingStore(null)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateStore} className="p-5 space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  Tên quán <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Tên quán..."
+                  value={editFormData.name}
+                  onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">Số điện thoại hotline</label>
+                  <input
+                    type="text"
+                    placeholder="09..."
+                    value={editFormData.phone}
+                    onChange={(e) => setEditFormData({ ...editFormData, phone: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">Trạng thái</label>
+                  <select
+                    value={editFormData.is_active}
+                    onChange={(e) => setEditFormData({ ...editFormData, is_active: parseInt(e.target.value) })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  >
+                    <option value={1}>Đang hoạt động</option>
+                    <option value={0}>Tạm ngưng</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-600 mb-1">Địa chỉ quán</label>
+                <input
+                  type="text"
+                  placeholder="Địa chỉ số nhà, đường, thành phố..."
+                  value={editFormData.address}
+                  onChange={(e) => setEditFormData({ ...editFormData, address: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">URL Logo quán</label>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={editFormData.logo}
+                    onChange={(e) => setEditFormData({ ...editFormData, logo: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                </div>
+                <div>
+                  <label className="block font-semibold text-slate-600 mb-1">URL Ảnh bìa</label>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={editFormData.cover_image}
+                    onChange={(e) => setEditFormData({ ...editFormData, cover_image: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-600 mb-1">Ghi chú về quán</label>
+                <textarea
+                  rows={2}
+                  placeholder="Ghi chú thêm..."
+                  value={editFormData.notes}
+                  onChange={(e) => setEditFormData({ ...editFormData, notes: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingStore(null)}
+                  className="py-2.5 px-4 border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-xl font-bold"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="py-2.5 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md transition-all flex items-center gap-1.5"
+                >
+                  {submitting ? 'Đang lưu...' : 'Lưu Thay Đổi'}
                 </button>
               </div>
             </form>

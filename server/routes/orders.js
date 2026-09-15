@@ -84,13 +84,20 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // 3. Compute subsidy
-    const subsidyCfg = await getSubsidySetting();
+    // 3. Compute payment: Không có công ty hỗ trợ.
+    // Chỉ có "Được bao" (miễn phí hết 0đ) hoặc "Tự túc" (trả 100% tiền món).
+    const session = await get('SELECT * FROM daily_order_sessions WHERE id = ?', [session_id]);
+    const isSponsored = session && session.sponsor_type === 'SPONSOR';
     let subsidyAmount = 0;
-    if (subsidyCfg.enabled) {
-      subsidyAmount = Math.min(calculatedTotal, subsidyCfg.amount_per_person || 20000);
+    let employeePaidAmount = calculatedTotal;
+
+    if (isSponsored) {
+      subsidyAmount = calculatedTotal; // Người bao chi trả toàn bộ
+      employeePaidAmount = 0;          // Nhân viên đặt được miễn phí hết
+    } else {
+      subsidyAmount = 0;
+      employeePaidAmount = calculatedTotal; // Tự túc trả tiền
     }
-    const employeePaidAmount = Math.max(0, calculatedTotal - subsidyAmount);
 
     // 4. Check if employee already has an order in this session (replaces or updates to prevent duplicate orders)
     const existingOrder = await get(`

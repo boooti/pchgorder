@@ -230,16 +230,6 @@ export default function EmployeeHome({
                 Các Đợt Order Hôm Nay ({visibleSessions.length})
               </h2>
             </div>
-            <button
-              onClick={() => {
-                if (!currentUser) onOpenUserModal();
-                else if (onOpenCreateGroup) onOpenCreateGroup();
-              }}
-              className="px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all active:scale-95 shadow-sm"
-            >
-              <Users className="w-3.5 h-3.5" />
-              <span>+ Mở đợt order mới</span>
-            </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -688,7 +678,7 @@ export default function EmployeeHome({
           <p className="text-xs mt-1 text-slate-400">Thử tìm bằng từ khóa khác hoặc chuyển danh mục</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-3.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-2.5">
           {filteredProducts.map((prod) => {
             const isAvailable = prod.is_available === 1;
             const lowestPrice = prod.sizes?.length > 0
@@ -701,7 +691,7 @@ export default function EmployeeHome({
             return (
               <div
                 key={prod.id}
-                className={`group bg-white rounded-3xl p-4 border transition-all flex flex-col justify-between shadow-xs hover:shadow-md ${
+                className={`group bg-white rounded-2xl p-2.5 sm:p-3 border transition-all flex flex-col justify-between shadow-2xs hover:shadow-md ${
                   isAvailable
                     ? 'border-slate-200/90 hover:border-blue-400 hover:bg-blue-50/10'
                     : 'border-slate-200 bg-slate-50/70 opacity-60'
@@ -709,12 +699,12 @@ export default function EmployeeHome({
               >
                 <div>
                   {/* Title & Status Bar */}
-                  <div className="flex items-start justify-between gap-2">
-                    <h4 className="font-black text-slate-900 text-sm sm:text-base leading-snug group-hover:text-blue-600 transition-colors line-clamp-1">
+                  <div className="flex items-start justify-between gap-1.5">
+                    <h4 className="font-bold text-slate-900 text-xs sm:text-sm leading-snug group-hover:text-blue-700 transition-colors line-clamp-1">
                       {prod.name}
                     </h4>
                     {!isAvailable && (
-                      <span className="shrink-0 text-[10px] font-black uppercase tracking-wider text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                      <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-rose-600 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded-md">
                         HẾT MÓN
                       </span>
                     )}
@@ -722,18 +712,18 @@ export default function EmployeeHome({
 
                   {/* Description */}
                   {prod.description && (
-                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1 leading-normal">
                       {prod.description}
                     </p>
                   )}
 
                   {/* Size Preview Tags */}
                   {prod.sizes?.length > 0 && (
-                    <div className="flex items-center gap-1.5 mt-2.5 flex-wrap">
+                    <div className="flex items-center gap-1 mt-1.5 flex-wrap">
                       {prod.sizes.map((s) => (
                         <span
                           key={s.id}
-                          className="text-[10px] font-semibold px-2 py-0.5 rounded-lg bg-slate-100 text-slate-600 border border-slate-200/60"
+                          className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200/50"
                         >
                           Size {s.size_name}: <strong className="font-mono text-slate-800">{formatVND(s.price)}đ</strong>
                         </span>
@@ -743,26 +733,26 @@ export default function EmployeeHome({
                 </div>
 
                 {/* Bottom Row: Price & Action */}
-                <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between gap-1.5">
                   <div className="font-mono">
                     {session.sponsor_type === 'SPONSOR' ? (
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="text-emerald-600 font-black text-sm sm:text-base">0đ</span>
-                        <span className="line-through text-slate-400 text-xs font-normal">
+                      <div className="flex items-center gap-1 flex-wrap">
+                        <span className="text-emerald-600 font-black text-xs sm:text-sm">0đ</span>
+                        <span className="line-through text-slate-400 text-[10px] font-normal">
                           {formatVND(lowestPrice)}đ
                         </span>
-                        <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md font-sans font-semibold">
+                        <span className="text-[9px] text-amber-700 bg-amber-50 border border-amber-200 px-1 py-0.2 rounded font-sans font-semibold">
                           Được bao
                         </span>
                       </div>
                     ) : (
                       <div>
-                        <span className="text-slate-900 font-black text-sm sm:text-base">
+                        <span className="text-slate-900 font-black text-xs sm:text-sm">
                           {formatVND(lowestPrice)}đ
                         </span>
                         {prod.sizes?.length > 1 && (
-                          <span className="text-[10px] text-slate-400 font-normal font-sans ml-1">
-                            ~ {formatVND(highestPrice)}đ
+                          <span className="text-[9px] text-slate-400 font-normal font-sans ml-0.5">
+                            ~{formatVND(highestPrice)}đ
                           </span>
                         )}
                       </div>
@@ -779,13 +769,13 @@ export default function EmployeeHome({
                         }
                       }}
                       disabled={isSessionClosed}
-                      className="py-1.5 px-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 active:scale-95 shadow-xs shrink-0"
+                      className="py-1 px-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-lg text-[11px] font-bold transition-all flex items-center gap-0.5 active:scale-95 shadow-2xs shrink-0"
                     >
-                      <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                      <Plus className="w-3 h-3 stroke-[2.5]" />
                       <span>Chọn món</span>
                     </button>
                   ) : (
-                    <span className="text-xs font-bold text-slate-400 px-2 py-1 bg-slate-100 rounded-lg">
+                    <span className="text-[10px] font-bold text-slate-400 px-1.5 py-0.5 bg-slate-100 rounded-md">
                       Tạm hết
                     </span>
                   )}
