@@ -286,6 +286,69 @@ Ghi chú: {DELIVERY_NOTE}`;
     if (!empColNames.includes('has_asked_password')) {
       await run(`ALTER TABLE employees ADD COLUMN has_asked_password INTEGER DEFAULT 0`);
     }
+
+    // Auto-sync 47 active employees
+    const syncEmployees = [
+      { id: 'emp-03', name: 'Lâm Hoàng Lam', phone: '0903456789', department: 'Ban GĐ' },
+      { id: 'emp-14', name: 'Nguyễn Ngọc Nguyên', phone: '0914567890', department: 'Đầu tư - Pháp lý' },
+      { id: 'emp-15', name: 'Trần Thị Hương', phone: '0915678901', department: 'Đầu tư - Pháp lý' },
+      { id: 'emp-16', name: 'Trần Thị Trinh', phone: '0916789012', department: 'Đầu tư - Pháp lý' },
+      { id: 'emp-17', name: 'Hồ Huy Toàn', phone: '0917890123', department: 'Đầu tư - Pháp lý' },
+      { id: 'emp-18', name: 'Lê Long Giang', phone: '0918901234', department: 'Đầu tư - Pháp lý' },
+      { id: 'emp-19', name: 'Thị Yến Linh', phone: '0919012345', department: 'Đầu tư - Pháp lý' },
+      { id: 'emp-20', name: 'Nguyễn Văn Công', phone: '0920123456', department: 'Phòng BIM' },
+      { id: 'emp-21', name: 'Trần Văn Nhựt Cường', phone: '0921234567', department: 'Phòng BIM' },
+      { id: 'emp-22', name: 'Trương Đình Thi', phone: '0922345678', department: 'Phòng BIM' },
+      { id: 'emp-23', name: 'Trần Văn Sua', phone: '0923456789', department: 'Phòng BIM' },
+      { id: 'emp-24', name: 'Nguyễn Thị Minh Thư', phone: '0924567890', department: 'Phòng BIM' },
+      { id: 'emp-25', name: 'Hưng Tấn Đạt', phone: '0925678901', department: 'Phòng BIM' },
+      { id: 'emp-26', name: 'Nguyễn Hồng Ái', phone: '0926789012', department: 'Phòng BIM' },
+      { id: 'emp-27', name: 'Đồng Hữu Phú', phone: '0927890123', department: 'Phòng BIM' },
+      { id: 'emp-28', name: 'Trần Minh Đăng', phone: '0928901234', department: 'Phòng BIM' },
+      { id: 'emp-29', name: 'Dư Văn Đạt', phone: '0929012345', department: 'Phòng BIM' },
+      { id: 'emp-30', name: 'Nguyễn Kiều Tiên', phone: '0930123456', department: 'Phòng BIM' },
+      { id: 'emp-31', name: 'Phạm Bình An', phone: '0931234567', department: 'Phòng BIM' },
+      { id: 'emp-32', name: 'Huỳnh Tấn Lộc', phone: '0932345678', department: 'Phòng BIM' },
+      { id: 'emp-33', name: 'Lâm Thiên Phú', phone: '0933456789', department: 'Phòng BIM' },
+      { id: 'emp-34', name: 'Trần Thị Diễm Linh', phone: '0934567890', department: 'Tài chính - Nhân sự' },
+      { id: 'emp-35', name: 'Vũ Huỳnh Như Ý', phone: '0935678901', department: 'Tài chính - Nhân sự' },
+      { id: 'emp-36', name: 'Nguyễn Phương Loan', phone: '0936789012', department: 'Tài chính - Nhân sự' },
+      { id: 'emp-37', name: 'Trần Chí Hậu', phone: '0937890123', department: 'Tài chính - Nhân sự' },
+      { id: 'emp-38', name: 'Trần Võ Phương Nghi', phone: '0938901234', department: 'Tài chính - Nhân sự' },
+      { id: 'emp-39', name: 'Trần Thị Nhung', phone: '0939012345', department: 'Phòng Kinh doanh' },
+      { id: 'emp-40', name: 'Đào Thị Huyền Trân', phone: '0940123456', department: 'Tài chính - Nhân sự' },
+      { id: 'emp-41', name: 'Nguyễn Tất Vũ', phone: '0941234567', department: 'Phòng Kinh doanh' },
+      { id: 'emp-42', name: 'Thị Mỹ Duyên', phone: '0942234567', department: 'Tài chính - Nhân sự' },
+      { id: 'emp-43', name: 'Nguyễn Thị Kim Yến', phone: '0943234567', department: 'Ban GĐ' },
+      { id: 'emp-04', name: 'Vũ Đăng Trình', phone: '0904567890', department: 'BQLDA' },
+      { id: 'emp-05', name: 'Nguyễn Tam Giác', phone: '0905678901', department: 'BQLDA' },
+      { id: 'emp-06', name: 'Trần Trung Tiến', phone: '0906789012', department: 'BQLDA' },
+      { id: 'emp-07', name: 'Trương Vĩnh Thế', phone: '0907890123', department: 'BQLDA' },
+      { id: 'emp-08', name: 'Du Vinh Huê', phone: '0908901234', department: 'BQLDA' },
+      { id: 'emp-09', name: 'Lê Minh Đăng', phone: '0909012345', department: 'BQLDA' },
+      { id: 'emp-10', name: 'Phan Văn Nhân', phone: '0910123456', department: 'BQLDA' },
+      { id: 'emp-11', name: 'Đoàn Tuấn Anh', phone: '0911234567', department: 'BQLDA' },
+      { id: 'emp-12', name: 'Nguyễn Văn Chiến', phone: '0912345678', department: 'BQLDA' },
+      { id: 'emp-13', name: 'Trần Thanh Tiến', phone: '0913456789', department: 'BQLDA' },
+      { id: 'emp-44', name: 'Lê Văn Hóa', phone: '0944234567', department: 'BQLDA' },
+      { id: 'emp-45', name: 'Lâm Vĩ Khang', phone: '0945234567', department: 'BQLDA' },
+      { id: 'emp-46', name: 'Nguyễn Minh Trí', phone: '0946234567', department: 'BQLDA' },
+      { id: 'emp-47', name: 'Đinh Đặng Hồng Vĩ', phone: '0947234567', department: 'BQLDA' },
+      { id: 'emp-48', name: 'Nguyễn Quang Đủ', phone: '0948234567', department: 'BQLDA' },
+      { id: 'emp-49', name: 'Lê Đình Thạnh', phone: '0949234567', department: 'BQLDA' }
+    ];
+
+    const validIds = syncEmployees.map(e => e.id);
+    await run(`UPDATE employees SET is_active = 0 WHERE id NOT IN (${validIds.map(() => '?').join(',')})`, validIds);
+
+    for (const e of syncEmployees) {
+      const existing = await get('SELECT id FROM employees WHERE id = ?', [e.id]);
+      if (existing) {
+        await run('UPDATE employees SET name = ?, department = ?, is_active = 1 WHERE id = ?', [e.name, e.department, e.id]);
+      } else {
+        await run('INSERT INTO employees (id, name, phone, department, is_active) VALUES (?, ?, ?, ?, 1)', [e.id, e.name, e.phone, e.department]);
+      }
+    }
   } catch (migErr) {
     console.warn('Migration note:', migErr.message);
   }
