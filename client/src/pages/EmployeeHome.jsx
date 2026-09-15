@@ -219,7 +219,7 @@ export default function EmployeeHome({
     : new Date().toLocaleDateString('vi-VN');
 
   return (
-    <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-28 space-y-5">
+    <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-36 sm:pb-24 space-y-5">
       {/* 0. Prominent Order Sessions Section ("ô của từng Đợt order to hơn") */}
       {visibleSessions.length > 0 && (
         <div className="space-y-2.5">

@@ -35,7 +35,7 @@ export default function FloatingCart({
   return (
     <>
       {/* Floating Bottom Bar (Sticky trigger) - Navy */}
-      <div className="fixed bottom-3 inset-x-3 sm:bottom-6 sm:max-w-md sm:mx-auto z-40">
+      <div className="fixed bottom-[72px] inset-x-3 sm:bottom-6 sm:max-w-md sm:mx-auto z-40">
         <div className="bg-slate-950 text-white rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-blue-900/50 flex items-center justify-between gap-3 transition-all transform hover:scale-[1.01] active:scale-[0.99]">
           <div
             onClick={() => setIsOpen(true)}
