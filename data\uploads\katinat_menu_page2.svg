@@ -1,0 +1,33 @@
+<svg width="800" height="1100" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#2b1f16"/>
+        <rect x="20" y="20" width="760" height="1060" rx="16" fill="#38291e" stroke="#10b981" stroke-width="3"/>
+        <text x="400" y="90" fill="#fef3c7" font-family="sans-serif" font-size="42" font-weight="bold" text-anchor="middle">KATINAT COFFEE &amp; TEA</text>
+        <text x="400" y="130" fill="#10b981" font-family="sans-serif" font-size="20" letter-spacing="4" text-anchor="middle">OFFICIAL MENU - TRANG 2: TRÀ SỮA &amp; TRÀ TRÁI CÂY</text>
+        <line x1="80" y1="150" x2="720" y2="150" stroke="#10b981" stroke-width="2"/>
+        
+        <g transform="translate(80, 200)">
+          <rect width="640" height="80" rx="8" fill="#4a3728"/>
+          <text x="25" y="45" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="bold">Trà Oolong Tứ Quý Sữa</text>
+          <text x="615" y="45" fill="#10b981" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="end">55.000đ / 65.000đ</text>
+          <text x="25" y="68" fill="#d6c3b3" font-family="sans-serif" font-size="15">Trà Oolong thơm hoa hậu vị ngọt thanh kết hợp sữa béo</text>
+        </g>
+        <g transform="translate(80, 300)">
+          <rect width="640" height="80" rx="8" fill="#4a3728"/>
+          <text x="25" y="45" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="bold">Trà Đào Hồng Đài</text>
+          <text x="615" y="45" fill="#10b981" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="end">50.000đ / 60.000đ</text>
+          <text x="25" y="68" fill="#d6c3b3" font-family="sans-serif" font-size="15">Trà thanh mát cùng miếng đào giòn ngọt tự nhiên</text>
+        </g>
+        <g transform="translate(80, 400)">
+          <rect width="640" height="80" rx="8" fill="#4a3728"/>
+          <text x="25" y="45" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="bold">Trà Sữa Chôm Chôm</text>
+          <text x="615" y="45" fill="#10b981" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="end">55.000đ / 65.000đ</text>
+          <text x="25" y="68" fill="#d6c3b3" font-family="sans-serif" font-size="15">Món best-seller độc quyền với trái chôm chôm tươi ngọt</text>
+        </g>
+        <g transform="translate(80, 500)">
+          <rect width="640" height="80" rx="8" fill="#4a3728"/>
+          <text x="25" y="45" fill="#ffffff" font-family="sans-serif" font-size="24" font-weight="bold">Trà Xanh Macchiato</text>
+          <text x="615" y="45" fill="#10b981" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="end">50.000đ / 60.000đ</text>
+          <text x="25" y="68" fill="#d6c3b3" font-family="sans-serif" font-size="15">Trà xanh thơm thanh cùng lớp váng sữa béo ngậy mềm mịn</text>
+        </g>
+        <text x="400" y="1030" fill="#a89280" font-family="sans-serif" font-size="16" text-anchor="middle">Topping: Phô mai dẻo (+10k) | Củ năng (+10k) | Kem Cheese (+12k)</text>
+      </svg>

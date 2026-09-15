@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="100%" height="100%">
+  <defs>
+    <linearGradient id="eBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b3d20"/>
+      <stop offset="100%" stop-color="#1b5e20"/>
+    </linearGradient>
+    <linearGradient id="hatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="240" height="240" rx="48" fill="url(#eBg)"/>
+  <circle cx="120" cy="120" r="98" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="6 6" opacity="0.3"/>
+
+  <!-- Conical Hat -->
+  <polygon points="108,46 76,82 140,82" fill="url(#hatGrad)"/>
+  <path d="M 94,82 Q 108,86 122,82" fill="none" stroke="#fef08a" stroke-width="3"/>
+  <path d="M 86,82 Q 80,105 84,118" fill="none" stroke="#fef08a" stroke-width="2" opacity="0.8"/>
+
+  <!-- Brand ê. -->
+  <text x="76" y="160" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="105" font-weight="900" fill="#ffffff" letter-spacing="-4">ê<tspan fill="#4ade80">.</tspan></text>
+
+  <!-- Subtext -->
+  <rect x="42" y="174" width="156" height="34" rx="12" fill="#ffffff" opacity="0.95"/>
+  <text x="120" y="196" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="900" fill="#0b3d20" text-anchor="middle" letter-spacing="3">JUICE</text>
+  <text x="120" y="222" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="700" fill="#86efac" text-anchor="middle" letter-spacing="1">TƯƠI MÁT NHỨC NGƯỜI</text>
+</svg>
