@@ -78,30 +78,31 @@ export default function Navbar({
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Identified Employee Badge */}
             {currentUser ? (
-              <div className="flex items-center gap-2 bg-blue-50/90 border border-blue-200/80 py-1.5 pl-2.5 pr-2 rounded-2xl">
-                <div className="w-7 h-7 rounded-full bg-blue-700 text-white font-bold text-xs flex items-center justify-center shrink-0">
+              <button
+                onClick={onOpenUserModal}
+                className="flex items-center gap-2.5 bg-gradient-to-r from-blue-50/90 via-slate-50 to-indigo-50/90 hover:from-blue-100/90 hover:to-indigo-100/90 border border-blue-200/90 py-1.5 pl-2 pr-3 rounded-2xl transition-all shadow-xs hover:shadow-sm cursor-pointer group text-left"
+                title="Bấm để đổi người dùng khác"
+              >
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
                   {currentUser.name.split(' ').slice(-1)[0][0]}
                 </div>
-                <div className="text-left hidden sm:block">
-                  <div className="text-xs font-bold text-slate-900 leading-tight">
+                <div className="hidden sm:block">
+                  <div className="text-xs font-black text-slate-900 leading-tight group-hover:text-blue-700 transition-colors">
                     {currentUser.name}
                   </div>
-                  <div className="text-[10px] text-blue-800">
+                  <div className="text-[10px] text-slate-500 font-medium leading-none mt-0.5">
                     {currentUser.department || 'Nhân viên'}
                   </div>
                 </div>
-                <button
-                  onClick={onOpenUserModal}
-                  title="Đổi nhân viên"
-                  className="p-1.5 rounded-lg hover:bg-blue-100 text-blue-900 transition-colors ml-1"
-                >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                </button>
-              </div>
+                <div className="px-2 py-0.5 rounded-lg bg-blue-600 text-white text-[10px] font-bold flex items-center gap-1 ml-1 group-hover:bg-blue-700 transition-colors shrink-0">
+                  <RefreshCw className="w-2.5 h-2.5" />
+                  <span className="hidden md:inline">Đổi</span>
+                </div>
+              </button>
             ) : (
               <button
                 onClick={onOpenUserModal}
-                className="py-2 px-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-2xl shadow-sm transition-all flex items-center gap-1.5"
+                className="py-2 px-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-2xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95"
               >
                 <User className="w-3.5 h-3.5" />
                 <span>Bạn là ai?</span>

@@ -220,49 +220,108 @@ export default function EmployeeHome({
 
   return (
     <div className="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-28 space-y-5">
-      {/* 0. Multi-Session Switcher Bar */}
+      {/* 0. Prominent Order Sessions Section ("ô của từng Đợt order to hơn") */}
       {visibleSessions.length > 0 && (
-        <div className="flex items-center justify-between gap-3 overflow-x-auto pb-1 no-scrollbar">
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider hidden sm:inline">
-              Đợt order:
-            </span>
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
+              <h2 className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-700">
+                Các Đợt Order Hôm Nay ({visibleSessions.length})
+              </h2>
+            </div>
+            <button
+              onClick={() => {
+                if (!currentUser) onOpenUserModal();
+                else if (onOpenCreateGroup) onOpenCreateGroup();
+              }}
+              className="px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all active:scale-95 shadow-sm"
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>+ Mở đợt order mới</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {visibleSessions.map((s) => {
               const isSelected = session && session.id === s.id;
               const isScopeAll = s.scope_type === 'ALL' || !s.scope_type;
+              const isClosed = s.status !== 'OPEN';
               return (
-                <button
+                <div
                   key={s.id}
                   onClick={() => onSelectSession && onSelectSession(s.id)}
-                  className={`px-3.5 py-2 rounded-2xl text-xs font-bold transition-all shrink-0 flex items-center gap-2 border ${
+                  className={`p-3.5 sm:p-4 rounded-3xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-3 shadow-xs hover:shadow-md ${
                     isSelected
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-blue-500/20'
-                      : 'bg-white text-slate-700 hover:bg-slate-100 border-slate-200 shadow-soft'
+                      ? 'bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white border-blue-500 ring-4 ring-blue-500/20 shadow-lg'
+                      : 'bg-white text-slate-800 border-slate-200/90 hover:border-blue-400 hover:bg-blue-50/20'
                   }`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${s.status === 'OPEN' ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
-                  <span className="truncate max-w-[140px] sm:max-w-[200px]">{s.title || s.store_name}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-md ${
-                    isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-500'
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-12 h-12 rounded-2xl bg-white p-1.5 border border-slate-200/60 shadow-sm shrink-0 flex items-center justify-center overflow-hidden">
+                        <img
+                          src={s.store_logo || 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=100'}
+                          alt={s.store_name}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                            isScopeAll
+                              ? (isSelected ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800')
+                              : s.scope_type === 'DEPARTMENT'
+                              ? (isSelected ? 'bg-amber-500 text-slate-950' : 'bg-amber-100 text-amber-900')
+                              : (isSelected ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-900')
+                          }`}>
+                            {isScopeAll ? 'Toàn công ty' : s.scope_type === 'DEPARTMENT' ? 'Phòng ban' : 'Nhóm riêng'}
+                          </span>
+                          <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                            isClosed
+                              ? (isSelected ? 'bg-rose-500/30 text-rose-200' : 'bg-rose-100 text-rose-800')
+                              : (isSelected ? 'bg-emerald-500/30 text-emerald-200' : 'bg-emerald-100 text-emerald-800')
+                          }`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${isClosed ? 'bg-rose-500' : 'bg-emerald-500 animate-pulse'}`} />
+                            <span>{isClosed ? 'Đã chốt' : 'Đang mở'}</span>
+                          </span>
+                        </div>
+                        <h3 className={`font-black text-sm sm:text-base mt-1 truncate ${
+                          isSelected ? 'text-white' : 'text-slate-900'
+                        }`}>
+                          {s.title || s.store_name}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`pt-2.5 border-t flex items-center justify-between text-xs ${
+                    isSelected ? 'border-white/10 text-slate-300' : 'border-slate-100 text-slate-500'
                   }`}>
-                    {isScopeAll ? 'Toàn cty' : 'Nhóm riêng'}
-                  </span>
-                </button>
+                    <div className="truncate text-[11px]">
+                      {s.creator_name ? (
+                        <span>Tạo bởi: <strong className={isSelected ? 'text-white' : 'text-slate-800'}>{s.creator_name}</strong></span>
+                      ) : (
+                        <span>Phiên tự động</span>
+                      )}
+                    </div>
+                    <div>
+                      {isSelected ? (
+                        <span className="text-[11px] font-black text-blue-300 bg-blue-500/20 border border-blue-400/30 px-2.5 py-1 rounded-xl flex items-center gap-1">
+                          <Check className="w-3 h-3 stroke-[3]" />
+                          <span>Đang xem</span>
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-bold text-blue-600 hover:underline">
+                          Chọn đợt này →
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>
-
-          <button
-            onClick={() => {
-              if (!currentUser) onOpenUserModal();
-              else if (onOpenCreateGroup) onOpenCreateGroup();
-            }}
-            className="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-2xl text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all active:scale-95 shadow-sm"
-          >
-            <Users className="w-3.5 h-3.5 text-blue-600" />
-            <span className="hidden sm:inline">+ Tạo nhóm riêng</span>
-            <span className="sm:hidden">+ Nhóm</span>
-          </button>
         </div>
       )}
 
@@ -629,72 +688,85 @@ export default function EmployeeHome({
           <p className="text-xs mt-1 text-slate-400">Thử tìm bằng từ khóa khác hoặc chuyển danh mục</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-3.5">
           {filteredProducts.map((prod) => {
             const isAvailable = prod.is_available === 1;
             const lowestPrice = prod.sizes?.length > 0
               ? Math.min(...prod.sizes.map((s) => s.price))
               : 25000;
+            const highestPrice = prod.sizes?.length > 1
+              ? Math.max(...prod.sizes.map((s) => s.price))
+              : lowestPrice;
 
             return (
               <div
                 key={prod.id}
-                className={`bg-white rounded-3xl p-3.5 sm:p-4 border transition-all flex flex-col justify-between shadow-soft hover:shadow-elevated ${
+                className={`group bg-white rounded-3xl p-4 border transition-all flex flex-col justify-between shadow-xs hover:shadow-md ${
                   isAvailable
-                    ? 'border-slate-200/80 hover:border-blue-300'
-                    : 'border-slate-200 bg-slate-50/70 opacity-75'
+                    ? 'border-slate-200/90 hover:border-blue-400 hover:bg-blue-50/10'
+                    : 'border-slate-200 bg-slate-50/70 opacity-60'
                 }`}
               >
-                <div className="flex gap-3.5">
-                  {/* Product Image */}
-                  <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-slate-100 shrink-0 border border-slate-100">
-                    <img
-                      src={prod.image || 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=250'}
-                      alt={prod.name}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                    />
+                <div>
+                  {/* Title & Status Bar */}
+                  <div className="flex items-start justify-between gap-2">
+                    <h4 className="font-black text-slate-900 text-sm sm:text-base leading-snug group-hover:text-blue-600 transition-colors line-clamp-1">
+                      {prod.name}
+                    </h4>
                     {!isAvailable && (
-                      <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px] flex items-center justify-center p-1 text-center">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-white bg-red-600 px-1.5 py-0.5 rounded shadow">
-                          HẾT MÓN
-                        </span>
-                      </div>
+                      <span className="shrink-0 text-[10px] font-black uppercase tracking-wider text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                        HẾT MÓN
+                      </span>
                     )}
                   </div>
 
-                  {/* Product Info */}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-slate-900 text-sm sm:text-base leading-snug truncate">
-                      {prod.name}
-                    </h4>
+                  {/* Description */}
+                  {prod.description && (
                     <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
-                      {prod.description || 'Hương vị đặc trưng thơm ngon.'}
+                      {prod.description}
                     </p>
-                    <div className="mt-2 text-xs font-bold font-mono">
-                      {session.sponsor_type === 'SPONSOR' ? (
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-emerald-700 font-black">0đ</span>
-                          <span className="line-through text-slate-400 text-[11px] font-normal">{formatVND(lowestPrice)}đ</span>
-                          <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md font-sans font-semibold">Được bao</span>
-                        </div>
-                      ) : (
-                        <span className="text-blue-900">
-                          {formatVND(lowestPrice)}đ
-                          {prod.sizes?.length > 1 && (
-                            <span className="text-[10px] text-slate-400 font-normal font-sans ml-1">
-                              (tùy size)
-                            </span>
-                          )}
+                  )}
+
+                  {/* Size Preview Tags */}
+                  {prod.sizes?.length > 0 && (
+                    <div className="flex items-center gap-1.5 mt-2.5 flex-wrap">
+                      {prod.sizes.map((s) => (
+                        <span
+                          key={s.id}
+                          className="text-[10px] font-semibold px-2 py-0.5 rounded-lg bg-slate-100 text-slate-600 border border-slate-200/60"
+                        >
+                          Size {s.size_name}: <strong className="font-mono text-slate-800">{formatVND(s.price)}đ</strong>
                         </span>
-                      )}
+                      ))}
                     </div>
-                  </div>
+                  )}
                 </div>
 
-                {/* Bottom Card Action */}
-                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-                  <div className="text-[11px] text-slate-400">
-                    {prod.sizes?.map((s) => s.size_name).join(' · ')}
+                {/* Bottom Row: Price & Action */}
+                <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                  <div className="font-mono">
+                    {session.sponsor_type === 'SPONSOR' ? (
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-emerald-600 font-black text-sm sm:text-base">0đ</span>
+                        <span className="line-through text-slate-400 text-xs font-normal">
+                          {formatVND(lowestPrice)}đ
+                        </span>
+                        <span className="text-[10px] text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md font-sans font-semibold">
+                          Được bao
+                        </span>
+                      </div>
+                    ) : (
+                      <div>
+                        <span className="text-slate-900 font-black text-sm sm:text-base">
+                          {formatVND(lowestPrice)}đ
+                        </span>
+                        {prod.sizes?.length > 1 && (
+                          <span className="text-[10px] text-slate-400 font-normal font-sans ml-1">
+                            ~ {formatVND(highestPrice)}đ
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {isAvailable ? (
@@ -707,14 +779,14 @@ export default function EmployeeHome({
                         }
                       }}
                       disabled={isSessionClosed}
-                      className="py-1.5 px-3.5 bg-blue-50 hover:bg-blue-600 text-blue-800 hover:text-white rounded-xl text-xs font-bold border border-blue-200 transition-all flex items-center gap-1 active:scale-95 disabled:opacity-40"
+                      className="py-1.5 px-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 active:scale-95 shadow-xs shrink-0"
                     >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>THÊM</span>
+                      <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                      <span>Chọn món</span>
                     </button>
                   ) : (
-                    <span className="text-xs font-bold text-red-500 px-2 py-1 bg-red-50 rounded-lg">
-                      TẠM HẾT
+                    <span className="text-xs font-bold text-slate-400 px-2 py-1 bg-slate-100 rounded-lg">
+                      Tạm hết
                     </span>
                   )}
                 </div>

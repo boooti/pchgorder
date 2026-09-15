@@ -97,27 +97,30 @@ export default function CustomizeItemSheet({
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
       {/* Container - Bottom sheet on mobile, rounded card on desktop */}
       <div className="bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden border border-stone-100 bottom-sheet-shadow">
-        {/* Header with Product preview */}
-        <div className="p-4 sm:p-5 border-b border-stone-100 flex items-start gap-3.5 relative bg-stone-50/70">
-          <img
-            src={product.image || 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=200'}
-            alt={product.name}
-            className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-md border border-white shrink-0"
-          />
-          <div className="flex-1 pr-8">
-            <h3 className="font-bold text-stone-900 text-base sm:text-lg leading-snug">
+        {/* Header without image - Clean, spacious & compact */}
+        <div className="p-4 sm:p-5 border-b border-slate-100 flex items-start justify-between gap-3 relative bg-gradient-to-r from-blue-50/50 via-white to-slate-50">
+          <div className="flex-1 pr-6">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-100 text-blue-800">
+                Tùy chỉnh món
+              </span>
+            </div>
+            <h3 className="font-black text-slate-900 text-lg sm:text-xl leading-tight">
               {product.name}
             </h3>
-            <p className="text-xs text-stone-500 mt-1 line-clamp-2 leading-relaxed">
-              {product.description || 'Món nước thơm ngon, chế biến tươi mới.'}
-            </p>
-            <div className="text-blue-700 font-bold text-base mt-1.5">
+            {product.description && (
+              <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                {product.description}
+              </p>
+            )}
+            <div className="text-blue-700 font-black text-lg mt-2 font-mono">
               {formatVND(basePrice)}đ
             </div>
           </div>
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full bg-stone-200/80 hover:bg-stone-300 text-stone-600 transition-colors"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors shrink-0"
+            title="Đóng"
           >
             <X className="w-4 h-4" />
           </button>
